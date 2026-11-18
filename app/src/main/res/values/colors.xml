@@ -11,6 +11,8 @@
     <color name="vermelho_progresso">#FF3B4E</color>
     <color name="preto">#121212</color>
     <color name="preto_trilha">#3A3A3A</color>
+    <!-- Vermelho claro: ações sobre fundo preto (ex.: "Desfazer" no Snackbar) -->
+    <color name="vermelho_claro">#FF8A95</color>
 
     <!-- Neutros -->
     <color name="branco">#FFFFFF</color>

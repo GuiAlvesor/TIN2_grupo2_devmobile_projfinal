@@ -28,6 +28,11 @@
         <item name="colorOutlineVariant">@color/divisoria</item>
         <item name="colorError">@color/vermelho</item>
 
+        <!-- Cores "inversas" (Snackbar): fundo preto, texto branco e ação em vermelho claro -->
+        <item name="colorSurfaceInverse">@color/preto</item>
+        <item name="colorOnSurfaceInverse">@color/branco</item>
+        <item name="colorPrimaryInverse">@color/vermelho_claro</item>
+
         <!--
             Fonte padrão (Inter) para TextViews sem textAppearance próprio. Aplicada pelo
             textAppearance do estilo padrão, e não por android:fontFamily no tema, para que
