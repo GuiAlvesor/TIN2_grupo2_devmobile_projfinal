@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -121,10 +122,10 @@ public class Registro {
     /** Indica se o texto informado aparece no título, setor ou descrição (sem diferenciar maiúsculas). */
     public boolean contemTexto(@Nullable String termo) {
         if (termo == null || termo.trim().isEmpty()) return true;
-        String t = termo.trim().toLowerCase();
-        return titulo.toLowerCase().contains(t)
-                || setor.toLowerCase().contains(t)
-                || descricao.toLowerCase().contains(t);
+        String t = termo.trim().toLowerCase(Locale.ROOT);
+        return titulo.toLowerCase(Locale.ROOT).contains(t)
+                || setor.toLowerCase(Locale.ROOT).contains(t)
+                || descricao.toLowerCase(Locale.ROOT).contains(t);
     }
 
     /** Compara apenas os campos editáveis pelo usuário (usado para detectar alterações não salvas). */

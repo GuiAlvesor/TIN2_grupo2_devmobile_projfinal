@@ -292,6 +292,11 @@ public class ChecklistActivity extends BaseActivity {
 
     /** UPDATE no repositório em memória com as respostas atuais. */
     private boolean gravar(boolean concluido) {
+        // A ação corretiva só faz sentido para respostas "Não": descarta textos que sobraram
+        // de itens que foram marcados como "Não" e depois mudaram de resposta.
+        for (ItemChecklist item : itens) {
+            if (item.getResposta() != Resposta.NAO) item.setObservacao(null);
+        }
         registro.setItens(itens);
         registro.setConcluido(concluido);
         if (!repositorio.atualizar(registro)) {
