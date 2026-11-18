@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Item da lista de registros (usado pelo RegistroAdapter) -->
+<!-- Card de um registro na listagem (RecyclerView) -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.App.Card"
+    style="@style/Widget.Producao.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/espaco_grande"
+    android:layout_marginStart="@dimen/espaco_tela"
     android:layout_marginTop="6dp"
-    android:layout_marginEnd="@dimen/espaco_grande"
+    android:layout_marginEnd="@dimen/espaco_tela"
     android:layout_marginBottom="6dp"
     android:clickable="true"
     android:focusable="true">
@@ -16,111 +16,98 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <!-- Faixa lateral com a cor da categoria -->
-        <View
-            android:id="@+id/viewFaixaCategoria"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="14dp"
-            android:background="@drawable/bg_tag"
-            tools:backgroundTint="@color/categoria_registro" />
+        android:orientation="vertical"
+        android:padding="@dimen/espaco_grande">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="14dp">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+            <FrameLayout
+                android:layout_width="@dimen/tamanho_icone_item"
+                android:layout_height="@dimen/tamanho_icone_item"
+                android:background="@drawable/bg_quadrado_icone">
 
                 <ImageView
                     android:id="@+id/ivIconeCategoria"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
                     android:contentDescription="@null"
                     tools:src="@drawable/ic_registro" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/espaco_medio"
+                android:layout_marginEnd="@dimen/espaco_pequeno"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvCategoria"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:textAllCaps="true"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    android:textStyle="bold"
+                    style="@style/Producao.Texto.Sobretitulo"
+                    android:textSize="11sp"
                     tools:text="Registro" />
 
                 <TextView
-                    android:id="@+id/tvPrioridade"
-                    style="@style/App.Tag"
-                    android:textAllCaps="true"
-                    tools:text="Alta" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvTitulo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/espaco_pequeno"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnSurface"
-                android:textStyle="bold"
-                tools:text="Troca de turno - Linha 2" />
-
-            <TextView
-                android:id="@+id/tvDescricao"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                tools:text="Máquina 04 operando com ruído anormal no rolamento." />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvSetor"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawablePadding="4dp"
+                    android:id="@+id/tvTitulo"
+                    style="@style/Producao.Texto"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="2dp"
                     android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    app:drawableStartCompat="@drawable/ic_location_pequeno"
-                    app:drawableTint="?attr/colorOnSurfaceVariant"
-                    tools:text="Linha 2 - Envase" />
-
-                <TextView
-                    android:id="@+id/tvStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/espaco_pequeno"
-                    android:drawablePadding="4dp"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    android:textStyle="bold"
-                    tools:text="Pendente" />
+                    android:maxLines="2"
+                    android:textAppearance="@style/TextAppearance.Producao.TituloItem"
+                    tools:text="Parada para setup - Injetora 3" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvPrioridade"
+                style="@style/Producao.Pilula"
+                tools:background="@drawable/bg_pilula_media"
+                tools:text="Média" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/espessura_divisoria"
+            android:layout_marginTop="@dimen/espaco_medio"
+            android:background="@color/divisoria" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/espaco_medio"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvSetor"
+                style="@style/Producao.Texto"
+                android:layout_width="0dp"
+                android:layout_marginEnd="@dimen/espaco_pequeno"
+                android:layout_weight="1"
+                android:drawablePadding="4dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textColor="@color/texto_secundario"
+                android:textSize="13sp"
+                app:drawableStartCompat="@drawable/ic_location_pequeno"
+                app:drawableTint="@color/texto_secundario"
+                tools:text="Injeção · 08:30" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                style="@style/Producao.Texto"
+                android:drawablePadding="4dp"
+                android:fontFamily="@font/inter_bold"
+                android:gravity="center_vertical"
+                android:textSize="13sp"
+                app:fontFamily="@font/inter_bold"
+                tools:text="Pendente" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

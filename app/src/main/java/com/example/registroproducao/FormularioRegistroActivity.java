@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -11,18 +14,20 @@ import androidx.annotation.Nullable;
 
 import com.example.registroproducao.data.RegistroRepository;
 import com.example.registroproducao.model.Categoria;
+import com.example.registroproducao.model.ItemChecklist;
 import com.example.registroproducao.model.Prioridade;
 import com.example.registroproducao.model.Registro;
 import com.example.registroproducao.util.Constantes;
 import com.example.registroproducao.util.TextWatcherSimples;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity de cadastro de registros, com o CRUD completo:
@@ -30,10 +35,13 @@ import com.google.android.material.textfield.TextInputLayout;
  * - READ:   com id no Intent, carrega o registro do repositório e preenche os campos;
  * - UPDATE: no modo de edição, salva as alterações;
  * - DELETE: no modo de edição, o ícone de lixeira da Toolbar exclui o registro.
+ * Para Listas de controle, também permite digitar os itens do checklist (um por linha).
  */
 public class FormularioRegistroActivity extends BaseActivity {
 
     private static final int TAMANHO_MINIMO_TITULO = 3;
+    private static final String ESTADO_CATEGORIA = "estado_categoria";
+    private static final String ESTADO_PRIORIDADE = "estado_prioridade";
 
     @NonNull
     public static Intent criarIntentNovo(@NonNull Context contexto, @Nullable Categoria categoriaInicial) {
@@ -54,12 +62,21 @@ public class FormularioRegistroActivity extends BaseActivity {
     /** Registro original em edição; {@code null} quando é um novo cadastro. */
     @Nullable private Registro registroEmEdicao;
 
-    private ChipGroup chipGroupCategoria;
+    private Categoria categoriaSelecionada = Categoria.REGISTRO;
+    private Prioridade prioridadeSelecionada = Prioridade.MEDIA;
+
+    private View blocoRegistro;
+    private View blocoLista;
+    private View blocoAnotacao;
+    private MaterialButton btnPrioridadeBaixa;
+    private MaterialButton btnPrioridadeMedia;
+    private MaterialButton btnPrioridadeAlta;
     private TextInputLayout tilTitulo;
     private TextInputEditText etTitulo;
     private TextInputEditText etSetor;
     private TextInputEditText etDescricao;
-    private MaterialButtonToggleGroup togglePrioridade;
+    private View layoutItens;
+    private TextInputEditText etItens;
     private MaterialSwitch swConcluido;
 
     @Override
@@ -81,10 +98,10 @@ public class FormularioRegistroActivity extends BaseActivity {
         }
         boolean modoEdicao = registroEmEdicao != null;
 
+        // Toolbar: X para fechar; no modo de edição, lixeira para excluir (DELETE).
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        configurarToolbar(toolbar, modoEdicao ? R.string.titulo_editar : R.string.titulo_novo, true);
+        configurarToolbar(toolbar, 0, R.drawable.ic_close, R.string.acao_fechar);
         if (modoEdicao) {
-            // No modo de edição a Toolbar oferece a ação de excluir (DELETE).
             toolbar.inflateMenu(R.menu.menu_formulario);
             toolbar.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.menuExcluir) {
@@ -94,23 +111,22 @@ public class FormularioRegistroActivity extends BaseActivity {
                 return false;
             });
         }
+        ((TextView) findViewById(R.id.tvTituloFormulario))
+                .setText(modoEdicao ? R.string.titulo_editar : R.string.form_titulo_novo);
 
-        chipGroupCategoria = findViewById(R.id.chipGroupCategoria);
-        tilTitulo = findViewById(R.id.tilTitulo);
-        etTitulo = findViewById(R.id.etTitulo);
-        etSetor = findViewById(R.id.etSetor);
-        etDescricao = findViewById(R.id.etDescricao);
-        togglePrioridade = findViewById(R.id.togglePrioridade);
-        swConcluido = findViewById(R.id.swConcluido);
+        vincularViews();
+        configurarSeletores();
 
-        MaterialButton btnSalvar = findViewById(R.id.btnSalvar);
-        btnSalvar.setText(modoEdicao ? R.string.acao_salvar_alteracoes : R.string.acao_cadastrar);
-        btnSalvar.setOnClickListener(v -> salvar());
-        findViewById(R.id.btnCancelar).setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+        findViewById(R.id.btnSalvar).setOnClickListener(v -> salvar());
+        findViewById(R.id.linhaResolvido).setOnClickListener(v -> swConcluido.toggle());
 
-        // Ao recriar a tela (ex.: rotação), os campos são restaurados automaticamente pelo Android.
         if (savedInstanceState == null) {
             preencherCampos();
+        } else {
+            // Os textos dos campos o Android restaura sozinho; categoria e prioridade são restauradas aqui.
+            Categoria categoria = Categoria.deNome(savedInstanceState.getString(ESTADO_CATEGORIA));
+            selecionarCategoria(categoria != null ? categoria : Categoria.REGISTRO);
+            selecionarPrioridade(prioridadeDeNome(savedInstanceState.getString(ESTADO_PRIORIDADE)));
         }
 
         etTitulo.addTextChangedListener(new TextWatcherSimples() {
@@ -120,7 +136,7 @@ public class FormularioRegistroActivity extends BaseActivity {
             }
         });
 
-        // Intercepta o "voltar" para avisar sobre alterações não salvas.
+        // Intercepta o "voltar" (e o X) para avisar sobre alterações não salvas.
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -133,11 +149,45 @@ public class FormularioRegistroActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ESTADO_CATEGORIA, categoriaSelecionada.name());
+        outState.putString(ESTADO_PRIORIDADE, prioridadeSelecionada.name());
+    }
+
+    private void vincularViews() {
+        blocoRegistro = findViewById(R.id.blocoRegistro);
+        blocoLista = findViewById(R.id.blocoLista);
+        blocoAnotacao = findViewById(R.id.blocoAnotacao);
+        btnPrioridadeBaixa = findViewById(R.id.btnPrioridadeBaixa);
+        btnPrioridadeMedia = findViewById(R.id.btnPrioridadeMedia);
+        btnPrioridadeAlta = findViewById(R.id.btnPrioridadeAlta);
+        tilTitulo = findViewById(R.id.tilTitulo);
+        etTitulo = findViewById(R.id.etTitulo);
+        etSetor = findViewById(R.id.etSetor);
+        etDescricao = findViewById(R.id.etDescricao);
+        layoutItens = findViewById(R.id.layoutItens);
+        etItens = findViewById(R.id.etItens);
+        swConcluido = findViewById(R.id.swConcluido);
+    }
+
+    private void configurarSeletores() {
+        blocoRegistro.setOnClickListener(v -> selecionarCategoria(Categoria.REGISTRO));
+        blocoLista.setOnClickListener(v -> selecionarCategoria(Categoria.LISTA_CONTROLE));
+        blocoAnotacao.setOnClickListener(v -> selecionarCategoria(Categoria.ANOTACAO));
+
+        btnPrioridadeBaixa.setOnClickListener(v -> selecionarPrioridade(Prioridade.BAIXA));
+        btnPrioridadeMedia.setOnClickListener(v -> selecionarPrioridade(Prioridade.MEDIA));
+        btnPrioridadeAlta.setOnClickListener(v -> selecionarPrioridade(Prioridade.ALTA));
+    }
+
     private void preencherCampos() {
         if (registroEmEdicao != null) {
             etTitulo.setText(registroEmEdicao.getTitulo());
             etSetor.setText(registroEmEdicao.getSetor());
             etDescricao.setText(registroEmEdicao.getDescricao());
+            etItens.setText(textoDosItens(registroEmEdicao.getItens()));
             selecionarCategoria(registroEmEdicao.getCategoria());
             selecionarPrioridade(registroEmEdicao.getPrioridade());
             swConcluido.setChecked(registroEmEdicao.isConcluido());
@@ -149,6 +199,31 @@ public class FormularioRegistroActivity extends BaseActivity {
         }
     }
 
+    // ===================== Seletores (categoria e prioridade) =====================
+
+    private void selecionarCategoria(@NonNull Categoria categoria) {
+        categoriaSelecionada = categoria;
+        blocoRegistro.setSelected(categoria == Categoria.REGISTRO);
+        blocoLista.setSelected(categoria == Categoria.LISTA_CONTROLE);
+        blocoAnotacao.setSelected(categoria == Categoria.ANOTACAO);
+        layoutItens.setVisibility(categoria == Categoria.LISTA_CONTROLE ? View.VISIBLE : View.GONE);
+    }
+
+    private void selecionarPrioridade(@NonNull Prioridade prioridade) {
+        prioridadeSelecionada = prioridade;
+        btnPrioridadeBaixa.setChecked(prioridade == Prioridade.BAIXA);
+        btnPrioridadeMedia.setChecked(prioridade == Prioridade.MEDIA);
+        btnPrioridadeAlta.setChecked(prioridade == Prioridade.ALTA);
+    }
+
+    @NonNull
+    private static Prioridade prioridadeDeNome(@Nullable String nome) {
+        for (Prioridade p : Prioridade.values()) {
+            if (p.name().equals(nome)) return p;
+        }
+        return Prioridade.MEDIA;
+    }
+
     // ===================== Leitura e validação =====================
 
     @NonNull
@@ -157,10 +232,50 @@ public class FormularioRegistroActivity extends BaseActivity {
         registro.setTitulo(textoDe(etTitulo));
         registro.setSetor(textoDe(etSetor));
         registro.setDescricao(textoDe(etDescricao));
-        registro.setCategoria(getCategoriaSelecionada());
-        registro.setPrioridade(getPrioridadeSelecionada());
+        registro.setCategoria(categoriaSelecionada);
+        registro.setPrioridade(prioridadeSelecionada);
         registro.setConcluido(swConcluido.isChecked());
+        registro.setItens(categoriaSelecionada == Categoria.LISTA_CONTROLE
+                ? lerItens(registroEmEdicao != null ? registroEmEdicao.getItens() : new ArrayList<>())
+                : new ArrayList<>());
         return registro;
+    }
+
+    /**
+     * Converte o texto (um item por linha) em itens do checklist. Itens que já existiam
+     * mantêm as respostas; com o campo vazio são usados os 5 itens padrão de segurança.
+     */
+    @NonNull
+    private List<ItemChecklist> lerItens(@NonNull List<ItemChecklist> anteriores) {
+        List<String> perguntas = new ArrayList<>();
+        for (String linha : textoDe(etItens).split("\n")) {
+            if (!linha.trim().isEmpty()) perguntas.add(linha.trim());
+        }
+        if (perguntas.isEmpty()) {
+            for (String padrao : getResources().getStringArray(R.array.itens_checklist_padrao)) {
+                perguntas.add(padrao);
+            }
+        }
+
+        List<ItemChecklist> itens = new ArrayList<>();
+        for (String pergunta : perguntas) {
+            ItemChecklist item = new ItemChecklist(pergunta);
+            for (ItemChecklist anterior : anteriores) {
+                if (anterior.getPergunta().equals(pergunta)) {
+                    item = new ItemChecklist(anterior);
+                    break;
+                }
+            }
+            itens.add(item);
+        }
+        return itens;
+    }
+
+    @NonNull
+    private static String textoDosItens(@NonNull List<ItemChecklist> itens) {
+        List<String> perguntas = new ArrayList<>();
+        for (ItemChecklist item : itens) perguntas.add(item.getPergunta());
+        return TextUtils.join("\n", perguntas);
     }
 
     private boolean validar() {
@@ -191,8 +306,12 @@ public class FormularioRegistroActivity extends BaseActivity {
                 mostrarMensagem(R.string.msg_registro_nao_encontrado);
             }
         } else {
-            repositorio.adicionar(registro);
+            Registro salvo = repositorio.adicionar(registro);
             mostrarMensagem(R.string.msg_registro_cadastrado);
+            // Uma nova Lista de controle pendente já abre para ser respondida.
+            if (salvo.getCategoria() == Categoria.LISTA_CONTROLE && !salvo.isConcluido()) {
+                startActivity(ChecklistActivity.criarIntent(this, salvo.getId()));
+            }
         }
         setResult(RESULT_OK);
         finish();
@@ -225,13 +344,13 @@ public class FormularioRegistroActivity extends BaseActivity {
     }
 
     private boolean possuiAlteracoes() {
-        Registro atual = lerFormulario();
         if (registroEmEdicao != null) {
-            return !atual.temMesmoConteudo(registroEmEdicao);
+            return !lerFormulario().temMesmoConteudo(registroEmEdicao);
         }
-        return !atual.getTitulo().isEmpty()
-                || !atual.getSetor().isEmpty()
-                || !atual.getDescricao().isEmpty();
+        return !textoDe(etTitulo).isEmpty()
+                || !textoDe(etSetor).isEmpty()
+                || !textoDe(etDescricao).isEmpty()
+                || !textoDe(etItens).isEmpty();
     }
 
     private void confirmarDescarte() {
@@ -244,36 +363,6 @@ public class FormularioRegistroActivity extends BaseActivity {
                 })
                 .setNegativeButton(R.string.acao_continuar_editando, null)
                 .show();
-    }
-
-    // ===================== Conversões tela <-> modelo =====================
-
-    @NonNull
-    private Categoria getCategoriaSelecionada() {
-        int id = chipGroupCategoria.getCheckedChipId();
-        if (id == R.id.chipCategoriaListas) return Categoria.LISTA_CONTROLE;
-        if (id == R.id.chipCategoriaAnotacoes) return Categoria.ANOTACAO;
-        return Categoria.REGISTRO;
-    }
-
-    private void selecionarCategoria(@NonNull Categoria categoria) {
-        if (categoria == Categoria.LISTA_CONTROLE) chipGroupCategoria.check(R.id.chipCategoriaListas);
-        else if (categoria == Categoria.ANOTACAO) chipGroupCategoria.check(R.id.chipCategoriaAnotacoes);
-        else chipGroupCategoria.check(R.id.chipCategoriaRegistros);
-    }
-
-    @NonNull
-    private Prioridade getPrioridadeSelecionada() {
-        int id = togglePrioridade.getCheckedButtonId();
-        if (id == R.id.btnPrioridadeBaixa) return Prioridade.BAIXA;
-        if (id == R.id.btnPrioridadeAlta) return Prioridade.ALTA;
-        return Prioridade.MEDIA;
-    }
-
-    private void selecionarPrioridade(@NonNull Prioridade prioridade) {
-        if (prioridade == Prioridade.BAIXA) togglePrioridade.check(R.id.btnPrioridadeBaixa);
-        else if (prioridade == Prioridade.ALTA) togglePrioridade.check(R.id.btnPrioridadeAlta);
-        else togglePrioridade.check(R.id.btnPrioridadeMedia);
     }
 
     @NonNull

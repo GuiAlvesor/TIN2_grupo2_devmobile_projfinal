@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Menu da Toolbar do formulário, exibido apenas no modo de edição -->
+<!-- Menu da Toolbar do formulário, exibido apenas no modo de edição (DELETE) -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -7,5 +7,6 @@
         android:id="@+id/menuExcluir"
         android:icon="@drawable/ic_delete"
         android:title="@string/acao_excluir"
+        app:iconTint="@color/vermelho_escuro"
         app:showAsAction="always" />
 </menu>

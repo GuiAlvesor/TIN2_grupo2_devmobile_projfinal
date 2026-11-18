@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Selo Offline: pílula preta translúcida (22%) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/preto_22" />
+    <corners android:radius="100dp" />
+</shape>

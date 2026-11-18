@@ -13,7 +13,7 @@ quanto pela **linha de comando**.
 | Ferramenta | Versão | Observação |
 |---|---|---|
 | **Android Studio** | Ladybug (2024.2) ou mais recente | IDE obrigatória do projeto |
-| **JDK** | 17 | Já vem embutido no Android Studio (*JetBrains Runtime*); não precisa instalar separado |
+| **JDK do Gradle** | 17 a 21 | O Gradle 8.9 do projeto **não roda com JDK 22 ou superior**. Versões recentes do Android Studio trazem o JDK 25 embutido: nesse caso use um JDK 21 (ex.: *jbr-21*), ver seção 8 |
 | **Android SDK Platform** | API 35 (Android 15) | Usado para compilar (`compileSdk = 35`) |
 | **Android SDK Build-Tools** | 35.x | Instalado automaticamente pelo Gradle Sync, se faltar |
 | **Emulador ou dispositivo** | Android 5.0 (API 21) ou superior | `minSdk = 21` |
@@ -64,8 +64,15 @@ serviços externos**.
 | Biblioteca | Versão | Uso |
 |---|---|---|
 | `junit:junit` | 4.13.2 | Testes unitários (JVM) |
-| `androidx.test.ext:junit` | 1.2.1 | Runner dos testes instrumentados |
-| `androidx.test.espresso:espresso-core` | 3.6.1 | Testes de interface |
+| `androidx.test.ext:junit` | 1.3.0 | Runner dos testes instrumentados |
+| `androidx.test.espresso:espresso-core` | 3.7.0 | Testes de interface (3.7.0 ou superior é necessário para Android 15+) |
+
+### Fontes
+
+As fontes **Manrope** (títulos) e **Inter** (corpo) são arquivos `.ttf` estáticos do Google Fonts
+(licença SIL Open Font License 1.1) guardados em `app/src/main/res/font/`, com as famílias
+`manrope.xml` e `inter.xml`. Elas vão **dentro do APK**: nada é baixado em tempo de execução e o app
+continua funcionando sem internet.
 
 Não é preciso instalar nada manualmente: o **Gradle Sync** baixa tudo dos repositórios `google()` e
 `mavenCentral()`.
@@ -119,8 +126,14 @@ Para apenas **compilar** sem executar: **Build › Make Project** (`Ctrl + F9`).
 ## 5. Compilando pela linha de comando (opcional)
 
 Na pasta do projeto, use o Gradle Wrapper (não é preciso instalar o Gradle). É necessário ter um
-JDK 17 configurado na variável `JAVA_HOME` — dá para usar o JDK do próprio Android Studio
-(`<pasta do Android Studio>/jbr`).
+JDK de 17 a 21 configurado na variável `JAVA_HOME`. Se o JDK embutido no Android Studio
+(`<pasta do Android Studio>/jbr`) for o 25, aponte para um JDK 21 — por exemplo, o que o próprio
+Android Studio baixa em `C:\Users\<usuario>\.jdks\jbr-21...`:
+
+```powershell
+$env:JAVA_HOME = "$env:USERPROFILE\.jdks\jbr-21.0.11"   # ajuste para a versão instalada
+.\gradlew.bat assembleDebug
+```
 
 | Ação | Windows | Linux / macOS |
 |---|---|---|
@@ -170,7 +183,9 @@ Com o app rodando, abra a janela **Logcat** e filtre por `tag:CicloDeVida` para 
 | Problema | Solução |
 |---|---|
 | `SDK location not found` | Abra o projeto pelo Android Studio (ele cria o `local.properties` sozinho) ou crie o arquivo com `sdk.dir=C:\\Users\\<usuario>\\AppData\\Local\\Android\\Sdk` |
-| `Android Gradle plugin requires Java 17` | **File › Settings › Build, Execution, Deployment › Build Tools › Gradle** → em *Gradle JDK*, escolha o JDK 17 / *jbr-17* |
+| `Android Gradle plugin requires Java 17` | **File › Settings › Build, Execution, Deployment › Build Tools › Gradle** → em *Gradle JDK*, escolha um JDK 17 ou 21 (ex.: *jbr-21*) |
+| Build falha logo no início com `What went wrong: 25.0.x` (ou outra versão 22+) | O Gradle está rodando com JDK novo demais. Escolha um JDK 21 em *Gradle JDK* (Android Studio) ou no `JAVA_HOME` (linha de comando) |
+| Testes instrumentados falham com `NoSuchMethodException: InputManager.getInstance` | Espresso antigo em emulador Android 15+. O projeto já usa Espresso 3.7.0; confira se o `libs.versions.toml` não foi revertido |
 | `Failed to find target with hash string 'android-35'` | Instale a **API 35** no SDK Manager (seção 1) |
 | Gradle Sync demorado ou falhando por rede | Verifique a conexão na primeira sincronização e clique em **File › Sync Project with Gradle Files** |
 | Emulador não inicia | Ative a virtualização (VT-x / AMD-V) na BIOS e confira em **Device Manager** se a imagem do sistema foi baixada |

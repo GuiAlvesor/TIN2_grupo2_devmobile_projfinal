@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Execução de uma Lista de controle: cabeçalho com progresso, perguntas Sim/Não/N/A e rodapé fixo -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundo_cinza"
+    tools:context=".ChecklistActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/rolagem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/altura_barra_acoes">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ============ Cabeçalho vermelho ============ -->
+            <LinearLayout
+                android:id="@+id/appBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_cabecalho_vermelho"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/espaco_tela"
+                android:paddingTop="@dimen/espaco_pequeno"
+                android:paddingEnd="@dimen/espaco_tela"
+                android:paddingBottom="@dimen/espaco_extra">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnVoltar"
+                        style="@style/Widget.Producao.BotaoIcone"
+                        android:contentDescription="@string/acao_voltar"
+                        app:icon="@drawable/ic_arrow_back" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tvSetor"
+                        style="@style/Producao.Texto"
+                        android:background="@drawable/bg_chip_translucido"
+                        android:drawablePadding="4dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter_semibold"
+                        android:gravity="center_vertical"
+                        android:maxWidth="200dp"
+                        android:maxLines="1"
+                        android:paddingStart="12dp"
+                        android:paddingTop="6dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="6dp"
+                        android:textColor="@color/branco"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/ic_location_pequeno"
+                        app:drawableTint="@color/branco"
+                        app:fontFamily="@font/inter_semibold"
+                        tools:text="Linha 1 - Prensas" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Producao.Texto.Sobretitulo"
+                    android:layout_marginTop="@dimen/espaco_grande"
+                    android:alpha="0.85"
+                    android:text="@string/checklist_sobretitulo"
+                    android:textColor="@color/branco" />
+
+                <TextView
+                    android:id="@+id/tvTitulo"
+                    style="@style/Producao.Texto"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/manrope_extrabold"
+                    android:textColor="@color/branco"
+                    android:textSize="25sp"
+                    app:fontFamily="@font/manrope_extrabold"
+                    tools:text="Checklist de segurança diário" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/espaco_grande"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvProgresso"
+                        style="@style/Producao.Texto"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/branco"
+                        android:textSize="14sp"
+                        tools:text="2 de 5 respondidos" />
+
+                    <TextView
+                        android:id="@+id/tvPercentual"
+                        style="@style/Producao.Texto"
+                        android:fontFamily="@font/manrope_extrabold"
+                        android:textColor="@color/branco"
+                        android:textSize="16sp"
+                        app:fontFamily="@font/manrope_extrabold"
+                        tools:text="40%" />
+                </LinearLayout>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progresso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/espaco_pequeno"
+                    android:max="100"
+                    app:indicatorColor="@color/branco"
+                    app:trackColor="@color/preto_25"
+                    app:indicatorTrackGapSize="0dp"
+                    app:trackCornerRadius="4dp"
+                    app:trackStopIndicatorSize="0dp"
+                    app:trackThickness="8dp"
+                    tools:progress="40" />
+            </LinearLayout>
+
+            <!-- Perguntas (um card por item, inflados em código) -->
+            <LinearLayout
+                android:id="@+id/containerPerguntas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/espaco_tela"
+                android:paddingTop="@dimen/espaco_tela"
+                android:paddingEnd="@dimen/espaco_tela"
+                android:paddingBottom="@dimen/espaco_pequeno" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- ============ Rodapé fixo ============ -->
+    <LinearLayout
+        android:id="@+id/barraAcoes"
+        style="@style/Producao.BarraRodape">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSalvarRascunho"
+            style="@style/Widget.Producao.Botao.Contorno"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/espaco_pequeno"
+            android:layout_weight="1"
+            android:text="@string/acao_salvar_rascunho" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnFinalizar"
+            style="@style/Widget.Producao.Botao.Preto"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/espaco_pequeno"
+            android:layout_weight="1"
+            android:text="@string/acao_finalizar"
+            app:icon="@drawable/ic_check" />
+    </LinearLayout>
+
+    <!-- Faixa vermelha fixa atrás da status bar (altura definida em código pelos insets) -->
+    <View
+        android:id="@+id/faixaStatusBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:background="@color/vermelho" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

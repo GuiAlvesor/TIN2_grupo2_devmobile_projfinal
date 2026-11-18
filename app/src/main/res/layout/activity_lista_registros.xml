@@ -1,25 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Listagem de registros com busca, filtro por categoria e botão flutuante -->
+<!-- Listagem: título, busca, filtros em pílulas com contador, lista de cards e botão "+ Novo" -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
+    android:background="@color/fundo_cinza"
     tools:context=".ListaRegistrosActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary">
+        android:background="@color/branco"
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            style="@style/Widget.App.Toolbar"
+            style="@style/Widget.Producao.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />
+
+        <TextView
+            style="@style/Producao.Texto"
+            android:layout_marginStart="@dimen/espaco_tela"
+            android:layout_marginEnd="@dimen/espaco_tela"
+            android:text="@string/titulo_lista"
+            android:textAppearance="@style/TextAppearance.Producao.TituloTela" />
+
+        <!-- Busca -->
+        <EditText
+            android:id="@+id/etBusca"
+            style="@style/Producao.Entrada"
+            android:layout_height="@dimen/altura_busca"
+            android:layout_marginStart="@dimen/espaco_tela"
+            android:layout_marginTop="@dimen/espaco_grande"
+            android:layout_marginEnd="@dimen/espaco_tela"
+            android:autofillHints=""
+            android:background="@drawable/bg_campo_busca"
+            android:drawablePadding="@dimen/espaco_medio"
+            android:hint="@string/hint_busca_registros"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingStart="@dimen/espaco_grande"
+            android:paddingEnd="@dimen/espaco_grande"
+            android:textColorHint="@color/texto_secundario"
+            app:drawableStartCompat="@drawable/ic_search"
+            app:drawableTint="@color/texto_secundario" />
+
+        <!-- Filtros rápidos (pílulas com contador) -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/espaco_tela"
+            android:paddingTop="@dimen/espaco_medio"
+            android:paddingEnd="@dimen/espaco_tela"
+            android:paddingBottom="@dimen/espaco_medio"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupFiltro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipSpacingHorizontal="@dimen/espaco_pequeno"
+                app:selectionRequired="true"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFiltroTodos"
+                    style="@style/Widget.Producao.Chip.Filtro"
+                    android:checked="true"
+                    tools:text="Todos · 5" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFiltroPendentes"
+                    style="@style/Widget.Producao.Chip.Filtro"
+                    tools:text="Pendentes · 3" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFiltroAlta"
+                    style="@style/Widget.Producao.Chip.Filtro"
+                    tools:text="Alta · 2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFiltroChecklists"
+                    style="@style/Widget.Producao.Chip.Filtro"
+                    android:text="@string/filtro_checklists" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/espessura_divisoria"
+            android:background="@color/divisoria" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -28,81 +105,31 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Busca -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilBusca"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        <!-- Rótulo de seção + contador -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/espaco_grande"
-            android:layout_marginTop="@dimen/espaco_grande"
-            android:layout_marginEnd="@dimen/espaco_grande"
-            android:hint="@string/hint_busca"
-            app:boxBackgroundColor="?attr/colorSurface"
-            app:endIconMode="clear_text"
-            app:startIconDrawable="@drawable/ic_search">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/espaco_tela"
+            android:paddingTop="@dimen/espaco_grande"
+            android:paddingEnd="@dimen/espaco_tela"
+            android:paddingBottom="@dimen/espaco_pequeno">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etBusca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/tvRotuloSecao"
+                style="@style/Producao.Texto.Sobretitulo"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                tools:text="Hoje" />
 
-        <!-- Filtro por categoria -->
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/espaco_pequeno"
-            android:clipToPadding="false"
-            android:paddingStart="@dimen/espaco_grande"
-            android:paddingEnd="@dimen/espaco_grande"
-            android:scrollbars="none">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroupFiltro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:selectionRequired="true"
-                app:singleLine="true"
-                app:singleSelection="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipFiltroTodos"
-                    style="@style/Widget.App.Chip.Filtro"
-                    android:checked="true"
-                    android:text="@string/filtro_todos" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipFiltroRegistros"
-                    style="@style/Widget.App.Chip.Filtro"
-                    android:text="@string/categoria_registro" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipFiltroListas"
-                    style="@style/Widget.App.Chip.Filtro"
-                    android:text="@string/categoria_lista_controle" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipFiltroAnotacoes"
-                    style="@style/Widget.App.Chip.Filtro"
-                    android:text="@string/categoria_anotacao" />
-            </com.google.android.material.chip.ChipGroup>
-        </HorizontalScrollView>
-
-        <TextView
-            android:id="@+id/tvContador"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/espaco_grande"
-            android:paddingTop="@dimen/espaco_pequeno"
-            android:paddingEnd="@dimen/espaco_grande"
-            android:paddingBottom="@dimen/espaco_pequeno"
-            android:textAppearance="?attr/textAppearanceLabelLarge"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            tools:text="5 registros" />
+            <TextView
+                android:id="@+id/tvContador"
+                style="@style/Producao.Texto"
+                android:textColor="@color/texto_secundario"
+                android:textSize="13sp"
+                tools:text="5 registros" />
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -113,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingBottom="96dp"
+                android:paddingBottom="112dp"
                 tools:listitem="@layout/item_registro" />
 
             <!-- Estado vazio -->
@@ -121,51 +148,43 @@
                 android:id="@+id/layoutVazio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="@dimen/espaco_extra"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:paddingStart="@dimen/espaco_extra"
+                android:paddingTop="48dp"
+                android:paddingEnd="@dimen/espaco_extra"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="72dp"
                     android:layout_height="72dp"
-                    android:alpha="0.5"
+                    android:background="@drawable/bg_circulo"
+                    android:backgroundTint="@color/superficie_cinza"
                     android:contentDescription="@null"
+                    android:padding="18dp"
                     app:srcCompat="@drawable/ic_inbox"
-                    app:tint="?attr/colorOnSurfaceVariant" />
+                    app:tint="@color/texto_secundario" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/espaco_medio"
-                    android:text="@string/vazio_titulo"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textColor="?attr/colorOnSurface" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    style="@style/Producao.Texto.Secao"
+                    android:layout_marginTop="@dimen/espaco_grande"
                     android:gravity="center"
-                    android:text="@string/vazio_mensagem"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
+                    android:text="@string/vazio_titulo" />
+
+                <TextView
+                    style="@style/Producao.Texto.Secundario"
+                    android:layout_marginTop="@dimen/espaco_pequeno"
+                    android:gravity="center"
+                    android:text="@string/vazio_mensagem" />
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabNovo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.Producao.Fab"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/espaco_grande"
-        android:contentDescription="@string/acao_novo_registro"
+        android:layout_margin="@dimen/espaco_tela"
         android:text="@string/acao_novo"
-        app:backgroundTint="?attr/colorSecondary"
-        app:icon="@drawable/ic_add"
-        app:iconTint="?attr/colorOnSecondary"
-        android:textColor="?attr/colorOnSecondary" />
+        app:icon="@drawable/ic_add" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

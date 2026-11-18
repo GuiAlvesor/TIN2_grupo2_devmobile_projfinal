@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Formulário de cadastro e edição de registros -->
+<!-- Formulário de cadastro e edição de registros (CRUD completo) -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
+    android:background="@color/branco"
     tools:context=".FormularioRegistroActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary">
+        android:background="@color/branco"
+        app:elevation="0dp">
 
+        <!-- X para fechar; no modo de edição exibe também a lixeira (excluir) -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            style="@style/Widget.App.Toolbar"
+            style="@style/Widget.Producao.Toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            tools:title="@string/titulo_novo" />
+            android:layout_height="?attr/actionBarSize" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -34,52 +35,79 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/espaco_grande">
+            android:paddingStart="@dimen/espaco_tela"
+            android:paddingTop="4dp"
+            android:paddingEnd="@dimen/espaco_tela"
+            android:paddingBottom="@dimen/espaco_tela">
 
-            <!-- Categoria -->
             <TextView
-                style="@style/App.RotuloCampo"
+                android:id="@+id/tvTituloFormulario"
+                style="@style/Producao.Texto"
+                android:textAppearance="@style/TextAppearance.Producao.TituloTela"
+                android:textSize="28sp"
+                tools:text="@string/form_titulo_novo" />
+
+            <!-- ============ Categoria (3 blocos) ============ -->
+            <TextView
+                style="@style/Producao.Texto.RotuloCampo"
+                android:layout_marginTop="@dimen/espaco_extra"
                 android:text="@string/rotulo_categoria" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroupCategoria"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:selectionRequired="true"
-                app:singleSelection="true">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipCategoriaRegistros"
-                    style="@style/Widget.App.Chip.Filtro"
-                    android:text="@string/categoria_registro"
-                    app:chipIcon="@drawable/ic_registro"
-                    app:chipIconTint="@color/categoria_registro"
-                    app:chipIconVisible="true" />
+                <LinearLayout
+                    android:id="@+id/blocoRegistro"
+                    style="@style/Producao.BlocoCategoria"
+                    android:layout_marginEnd="@dimen/espaco_pequeno">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipCategoriaListas"
-                    style="@style/Widget.App.Chip.Filtro"
-                    android:text="@string/categoria_lista_controle"
-                    app:chipIcon="@drawable/ic_checklist"
-                    app:chipIconTint="@color/categoria_lista_controle"
-                    app:chipIconVisible="true" />
+                    <ImageView
+                        style="@style/Producao.BlocoCategoria.Icone"
+                        app:srcCompat="@drawable/ic_registro" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipCategoriaAnotacoes"
-                    style="@style/Widget.App.Chip.Filtro"
-                    android:text="@string/categoria_anotacao"
-                    app:chipIcon="@drawable/ic_anotacao"
-                    app:chipIconTint="@color/categoria_anotacao"
-                    app:chipIconVisible="true" />
-            </com.google.android.material.chip.ChipGroup>
+                    <TextView
+                        style="@style/Producao.BlocoCategoria.Rotulo"
+                        android:text="@string/categoria_registro" />
+                </LinearLayout>
 
-            <!-- Título -->
+                <LinearLayout
+                    android:id="@+id/blocoLista"
+                    style="@style/Producao.BlocoCategoria"
+                    android:layout_marginEnd="@dimen/espaco_pequeno">
+
+                    <ImageView
+                        style="@style/Producao.BlocoCategoria.Icone"
+                        app:srcCompat="@drawable/ic_checklist" />
+
+                    <TextView
+                        style="@style/Producao.BlocoCategoria.Rotulo"
+                        android:text="@string/categoria_lista_controle" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blocoAnotacao"
+                    style="@style/Producao.BlocoCategoria">
+
+                    <ImageView
+                        style="@style/Producao.BlocoCategoria.Icone"
+                        app:srcCompat="@drawable/ic_anotacao" />
+
+                    <TextView
+                        style="@style/Producao.BlocoCategoria.Rotulo"
+                        android:text="@string/categoria_anotacao" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ============ Título ============ -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilTitulo"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Producao.Campo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/espaco_grande"
+                android:layout_marginTop="@dimen/espaco_extra"
                 android:hint="@string/hint_titulo"
                 app:counterEnabled="true"
                 app:counterMaxLength="60"
@@ -87,132 +115,180 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etTitulo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/Producao.Entrada"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
                     android:maxLength="60"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Setor -->
+            <!-- ============ Setor ============ -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSetor"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Producao.Campo.Cinza"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_setor"
                 app:helperText="@string/ajuda_setor"
-                app:startIconDrawable="@drawable/ic_location">
+                app:startIconDrawable="@drawable/ic_location"
+                app:startIconTint="@color/texto_secundario">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etSetor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/Producao.Entrada"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
                     android:maxLength="40"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Prioridade -->
+            <!-- ============ Itens (só para Lista de controle) ============ -->
+            <LinearLayout
+                android:id="@+id/layoutItens"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/Producao.Texto.RotuloCampo"
+                    android:layout_marginTop="@dimen/espaco_grande"
+                    android:text="@string/rotulo_itens" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilItens"
+                    style="@style/Widget.Producao.Campo.Cinza"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_itens"
+                    app:helperText="@string/ajuda_itens">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etItens"
+                        style="@style/Producao.Entrada"
+                        android:gravity="top|start"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLength="1000"
+                        android:minLines="4" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- ============ Prioridade (controle segmentado) ============ -->
             <TextView
-                style="@style/App.RotuloCampo"
+                style="@style/Producao.Texto.RotuloCampo"
                 android:layout_marginTop="@dimen/espaco_grande"
                 android:text="@string/rotulo_prioridade" />
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/togglePrioridade"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:selectionRequired="true"
-                app:singleSelection="true">
+                android:background="@drawable/bg_segmentado"
+                android:orientation="horizontal"
+                android:padding="4dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnPrioridadeBaixa"
-                    style="@style/Widget.App.Button.Prioridade"
+                    style="@style/Widget.Producao.Botao.Segmento"
                     android:text="@string/prioridade_baixa" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnPrioridadeMedia"
-                    style="@style/Widget.App.Button.Prioridade"
+                    style="@style/Widget.Producao.Botao.Segmento"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
                     android:text="@string/prioridade_media" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnPrioridadeAlta"
-                    style="@style/Widget.App.Button.Prioridade"
+                    style="@style/Widget.Producao.Botao.Segmento"
                     android:text="@string/prioridade_alta" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+            </LinearLayout>
 
-            <!-- Descrição -->
+            <!-- ============ Descrição ============ -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDescricao"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Producao.Campo.Cinza"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/espaco_grande"
+                android:layout_marginTop="@dimen/espaco_extra"
                 android:hint="@string/hint_descricao"
                 app:counterEnabled="true"
                 app:counterMaxLength="500">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDescricao"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/Producao.Entrada"
                     android:gravity="top|start"
                     android:inputType="textCapSentences|textMultiLine"
                     android:maxLength="500"
                     android:minLines="4" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Status -->
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.App.Card.Contorno"
+            <!-- ============ Já foi resolvido ============ -->
+            <LinearLayout
+                android:id="@+id/linhaResolvido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/espaco_medio">
+                android:layout_marginTop="@dimen/espaco_medio"
+                android:background="@drawable/bg_linha_switch"
+                android:gravity="center_vertical"
+                android:minHeight="64dp"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/espaco_grande"
+                android:paddingEnd="@dimen/espaco_medio">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/espaco_medio"
+                    android:paddingBottom="@dimen/espaco_medio">
+
+                    <TextView
+                        style="@style/Producao.Texto"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/rotulo_resolvido"
+                        android:textColor="@color/preto"
+                        android:textSize="16sp"
+                        app:fontFamily="@font/inter_bold" />
+
+                    <TextView
+                        style="@style/Producao.Texto"
+                        android:text="@string/ajuda_resolvido"
+                        android:textColor="@color/texto_secundario"
+                        android:textSize="13sp" />
+                </LinearLayout>
 
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/swConcluido"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="@dimen/altura_toque_minima"
-                    android:paddingStart="@dimen/espaco_grande"
-                    android:paddingEnd="@dimen/espaco_grande"
-                    android:text="@string/rotulo_concluido"
-                    android:textAppearance="?attr/textAppearanceBodyLarge" />
-            </com.google.android.material.card.MaterialCardView>
+                    android:contentDescription="@string/rotulo_resolvido"
+                    android:minHeight="48dp" />
+            </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Producao.Texto"
                 android:layout_marginTop="@dimen/espaco_medio"
                 android:text="@string/campos_obrigatorios"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+                android:textColor="@color/texto_secundario"
+                android:textSize="12sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Barra de ações fixa no rodapé -->
+    <!-- ============ Botão fixo inferior ============ -->
     <LinearLayout
         android:id="@+id/barraAcoes"
-        style="@style/App.BarraAcoes">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancelar"
-            style="@style/Widget.App.Button.Grande.Contorno"
-            android:layout_width="0dp"
-            android:layout_marginEnd="@dimen/espaco_pequeno"
-            android:layout_weight="1"
-            android:text="@string/acao_cancelar" />
+        style="@style/Producao.BarraRodape">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSalvar"
-            style="@style/Widget.App.Button.Grande"
-            android:layout_width="0dp"
-            android:layout_marginStart="@dimen/espaco_pequeno"
-            android:layout_weight="1"
-            android:text="@string/acao_cadastrar"
-            app:icon="@drawable/ic_save" />
+            style="@style/Widget.Producao.Botao.Principal"
+            android:layout_width="match_parent"
+            android:text="@string/acao_salvar_registro"
+            app:icon="@drawable/ic_check"
+            app:iconGravity="textStart" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

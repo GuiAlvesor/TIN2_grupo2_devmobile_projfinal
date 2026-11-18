@@ -7,6 +7,7 @@ public final class Constantes {
 
     public static final String EXTRA_REGISTRO_ID = "com.example.registroproducao.EXTRA_REGISTRO_ID";
     public static final String EXTRA_CATEGORIA = "com.example.registroproducao.EXTRA_CATEGORIA";
+    public static final String EXTRA_FILTRO = "com.example.registroproducao.EXTRA_FILTRO";
     public static final String EXTRA_TITULO_REGISTRO = "com.example.registroproducao.EXTRA_TITULO_REGISTRO";
 
     /** Valor usado quando nenhum id foi enviado no Intent. */

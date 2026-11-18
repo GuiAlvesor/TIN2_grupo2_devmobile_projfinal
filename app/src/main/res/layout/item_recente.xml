@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Linha de registro recente no painel: ícone, título, "Categoria · Setor · hora" e prioridade -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="72dp"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/espaco_medio"
+    android:paddingBottom="@dimen/espaco_medio">
+
+    <FrameLayout
+        android:layout_width="@dimen/tamanho_icone_item"
+        android:layout_height="@dimen/tamanho_icone_item"
+        android:background="@drawable/bg_quadrado_icone">
+
+        <ImageView
+            android:id="@+id/ivIconeCategoria"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            tools:src="@drawable/ic_registro" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/espaco_medio"
+        android:layout_marginEnd="@dimen/espaco_pequeno"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitulo"
+            style="@style/Producao.Texto"
+            android:layout_width="match_parent"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Producao.TituloItem"
+            android:textSize="16sp"
+            tools:text="Ajuste de temperatura da estufa" />
+
+        <TextView
+            android:id="@+id/tvMeta"
+            style="@style/Producao.Texto"
+            android:layout_width="match_parent"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/texto_secundario"
+            android:textSize="13sp"
+            tools:text="Registro · Pintura · 08:30" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvPrioridade"
+        style="@style/Producao.Pilula"
+        tools:background="@drawable/bg_pilula_alta"
+        tools:text="Alta"
+        tools:textColor="@color/branco" />
+</LinearLayout>

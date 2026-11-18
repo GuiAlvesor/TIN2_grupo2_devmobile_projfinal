@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,39 +23,42 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.registroproducao.adapter.RegistroAdapter;
 import com.example.registroproducao.data.RegistroRepository;
 import com.example.registroproducao.model.Categoria;
+import com.example.registroproducao.model.FiltroLista;
 import com.example.registroproducao.model.Registro;
 import com.example.registroproducao.util.Constantes;
+import com.example.registroproducao.util.FormatadorData;
 import com.example.registroproducao.util.TextWatcherSimples;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
 /**
- * Tela de listagem (READ) com busca por texto, filtro por categoria,
- * exclusão por gesto (deslizar) e opção de desfazer.
+ * Tela de listagem (READ) com busca por texto, filtros rápidos (Todos, Pendentes, Alta,
+ * Checklists) com contador, exclusão por gesto (deslizar) e opção de desfazer.
  */
 public class ListaRegistrosActivity extends BaseActivity {
 
-    /** Cria o Intent de navegação para esta tela, opcionalmente já filtrada por categoria. */
+    /** Cria o Intent de navegação para esta tela, já com um dos filtros rápidos selecionado. */
     @NonNull
-    public static Intent criarIntent(@NonNull Context contexto, @Nullable Categoria filtro) {
-        Intent intent = new Intent(contexto, ListaRegistrosActivity.class);
-        if (filtro != null) {
-            intent.putExtra(Constantes.EXTRA_CATEGORIA, filtro.name());
-        }
-        return intent;
+    public static Intent criarIntent(@NonNull Context contexto, @NonNull FiltroLista filtro) {
+        return new Intent(contexto, ListaRegistrosActivity.class)
+                .putExtra(Constantes.EXTRA_FILTRO, filtro.name());
     }
 
     private RegistroRepository repositorio;
     private RegistroAdapter adapter;
 
     private View raiz;
-    private TextInputEditText etBusca;
+    private EditText etBusca;
     private ChipGroup chipGroupFiltro;
+    private Chip chipTodos;
+    private Chip chipPendentes;
+    private Chip chipAlta;
+    private TextView tvRotuloSecao;
     private TextView tvContador;
     private RecyclerView rvRegistros;
     private View layoutVazio;
@@ -79,12 +83,17 @@ public class ListaRegistrosActivity extends BaseActivity {
         aplicarInsetsDeSistema(findViewById(R.id.appBar), raiz);
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        configurarToolbar(toolbar, R.string.titulo_lista, true);
+        // O título grande fica abaixo da Toolbar, que mostra apenas o botão de voltar.
+        configurarToolbar(toolbar, 0, R.drawable.ic_arrow_back, R.string.acao_voltar);
 
         repositorio = RegistroRepository.getInstance();
 
         etBusca = findViewById(R.id.etBusca);
         chipGroupFiltro = findViewById(R.id.chipGroupFiltro);
+        chipTodos = findViewById(R.id.chipFiltroTodos);
+        chipPendentes = findViewById(R.id.chipFiltroPendentes);
+        chipAlta = findViewById(R.id.chipFiltroAlta);
+        tvRotuloSecao = findViewById(R.id.tvRotuloSecao);
         tvContador = findViewById(R.id.tvContador);
         rvRegistros = findViewById(R.id.rvRegistros);
         layoutVazio = findViewById(R.id.layoutVazio);
@@ -95,7 +104,7 @@ public class ListaRegistrosActivity extends BaseActivity {
         // Só aplica o filtro vindo do Intent na primeira criação; após rotação de tela
         // o próprio Android restaura o chip selecionado e o texto da busca.
         if (savedInstanceState == null) {
-            selecionarChip(Categoria.deNome(getIntent().getStringExtra(Constantes.EXTRA_CATEGORIA)));
+            selecionarChip(FiltroLista.deNome(getIntent().getStringExtra(Constantes.EXTRA_FILTRO)));
         }
 
         chipGroupFiltro.setOnCheckedStateChangeListener((grupo, ids) -> atualizarLista());
@@ -106,8 +115,9 @@ public class ListaRegistrosActivity extends BaseActivity {
             }
         });
 
-        fabNovo.setOnClickListener(v -> startActivity(
-                FormularioRegistroActivity.criarIntentNovo(this, getCategoriaSelecionada())));
+        // Em "Checklists", o novo registro já começa como Lista de controle.
+        fabNovo.setOnClickListener(v -> startActivity(FormularioRegistroActivity.criarIntentNovo(this,
+                getFiltroSelecionado() == FiltroLista.CHECKLISTS ? Categoria.LISTA_CONTROLE : null)));
     }
 
     @Override
@@ -137,31 +147,50 @@ public class ListaRegistrosActivity extends BaseActivity {
 
     private void atualizarLista() {
         String texto = etBusca.getText() != null ? etBusca.getText().toString() : "";
-        List<Registro> lista = repositorio.filtrar(texto, getCategoriaSelecionada());
+        List<Registro> lista = repositorio.filtrarPor(texto, getFiltroSelecionado());
         adapter.submitList(lista);
 
+        atualizarContadoresDosFiltros();
         tvContador.setText(getResources().getQuantityString(
                 R.plurals.contador_registros, lista.size(), lista.size()));
+        tvRotuloSecao.setText(todosDeHoje(lista) ? R.string.secao_hoje : R.string.secao_mais_recentes);
 
         boolean vazio = lista.isEmpty();
         layoutVazio.setVisibility(vazio ? View.VISIBLE : View.GONE);
         rvRegistros.setVisibility(vazio ? View.GONE : View.VISIBLE);
     }
 
-    @Nullable
-    private Categoria getCategoriaSelecionada() {
-        int id = chipGroupFiltro.getCheckedChipId();
-        // Os ids de R não são constantes (AGP 8+), por isso if/else em vez de switch.
-        if (id == R.id.chipFiltroRegistros) return Categoria.REGISTRO;
-        if (id == R.id.chipFiltroListas) return Categoria.LISTA_CONTROLE;
-        if (id == R.id.chipFiltroAnotacoes) return Categoria.ANOTACAO;
-        return null;
+    /** "Todos · N", "Pendentes · N" e "Alta · N" (os totais não dependem do texto da busca). */
+    private void atualizarContadoresDosFiltros() {
+        chipTodos.setText(getString(R.string.filtro_com_contador,
+                getString(R.string.filtro_todos), repositorio.contar(FiltroLista.TODOS)));
+        chipPendentes.setText(getString(R.string.filtro_com_contador,
+                getString(R.string.filtro_pendentes), repositorio.contar(FiltroLista.PENDENTES)));
+        chipAlta.setText(getString(R.string.filtro_com_contador,
+                getString(R.string.filtro_alta), repositorio.contar(FiltroLista.ALTA)));
     }
 
-    private void selecionarChip(@Nullable Categoria categoria) {
-        if (categoria == Categoria.REGISTRO) chipGroupFiltro.check(R.id.chipFiltroRegistros);
-        else if (categoria == Categoria.LISTA_CONTROLE) chipGroupFiltro.check(R.id.chipFiltroListas);
-        else if (categoria == Categoria.ANOTACAO) chipGroupFiltro.check(R.id.chipFiltroAnotacoes);
+    private static boolean todosDeHoje(@NonNull List<Registro> lista) {
+        for (Registro r : lista) {
+            if (!FormatadorData.ehHoje(r.getDataCriacao())) return false;
+        }
+        return true;
+    }
+
+    @NonNull
+    private FiltroLista getFiltroSelecionado() {
+        int id = chipGroupFiltro.getCheckedChipId();
+        // Os ids de R não são constantes (AGP 8+), por isso if/else em vez de switch.
+        if (id == R.id.chipFiltroPendentes) return FiltroLista.PENDENTES;
+        if (id == R.id.chipFiltroAlta) return FiltroLista.ALTA;
+        if (id == R.id.chipFiltroChecklists) return FiltroLista.CHECKLISTS;
+        return FiltroLista.TODOS;
+    }
+
+    private void selecionarChip(@NonNull FiltroLista filtro) {
+        if (filtro == FiltroLista.PENDENTES) chipGroupFiltro.check(R.id.chipFiltroPendentes);
+        else if (filtro == FiltroLista.ALTA) chipGroupFiltro.check(R.id.chipFiltroAlta);
+        else if (filtro == FiltroLista.CHECKLISTS) chipGroupFiltro.check(R.id.chipFiltroChecklists);
         else chipGroupFiltro.check(R.id.chipFiltroTodos);
     }
 

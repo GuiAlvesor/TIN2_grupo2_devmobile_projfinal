@@ -1,172 +1,506 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Tema base do aplicativo (Material Design 3, sem ActionBar: cada tela usa sua própria Toolbar) -->
+    <!--
+        Tema base (Material Design 3, sem ActionBar: cada tela monta o próprio cabeçalho).
+        Paleta vermelho · branco · preto; Inter no corpo e Manrope em títulos e números.
+    -->
     <style name="Theme.RegistroProducao" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/azul_industrial</item>
+        <item name="colorPrimary">@color/vermelho</item>
         <item name="colorOnPrimary">@color/branco</item>
-        <item name="colorPrimaryContainer">@color/azul_container</item>
-        <item name="colorOnPrimaryContainer">@color/azul_on_container</item>
+        <item name="colorPrimaryContainer">@color/vermelho_suave</item>
+        <item name="colorOnPrimaryContainer">@color/vermelho_escuro</item>
 
-        <item name="colorSecondary">@color/laranja_seguranca</item>
-        <item name="colorOnSecondary">@color/quase_preto</item>
-        <item name="colorSecondaryContainer">@color/laranja_container</item>
-        <item name="colorOnSecondaryContainer">@color/quase_preto</item>
+        <item name="colorSecondary">@color/preto</item>
+        <item name="colorOnSecondary">@color/branco</item>
+        <item name="colorSecondaryContainer">@color/superficie_cinza</item>
+        <item name="colorOnSecondaryContainer">@color/preto</item>
 
-        <item name="android:colorBackground">@color/fundo</item>
+        <item name="android:colorBackground">@color/branco</item>
         <item name="colorSurface">@color/branco</item>
-        <item name="colorOnSurface">@color/quase_preto</item>
-        <item name="colorSurfaceVariant">@color/superficie_variante</item>
+        <item name="colorSurfaceContainer">@color/branco</item>
+        <item name="colorSurfaceContainerHigh">@color/branco</item>
+        <item name="colorSurfaceContainerHighest">@color/superficie_cinza</item>
+        <item name="colorOnSurface">@color/preto</item>
+        <item name="colorSurfaceVariant">@color/superficie_cinza</item>
         <item name="colorOnSurfaceVariant">@color/texto_secundario</item>
-        <item name="colorOutline">@color/contorno</item>
-        <item name="colorError">@color/perigo</item>
+        <item name="colorOutline">@color/cinza_borda</item>
+        <item name="colorOutlineVariant">@color/divisoria</item>
+        <item name="colorError">@color/vermelho</item>
+
+        <!--
+            Fonte padrão (Inter) para TextViews sem textAppearance próprio. Aplicada pelo
+            textAppearance do estilo padrão, e não por android:fontFamily no tema, para que
+            cada view ainda possa trocar a fonte pelo próprio textAppearance.
+        -->
+        <item name="android:textViewStyle">@style/Producao.TextViewPadrao</item>
+
+        <!-- Escala tipográfica do Material 3 com as fontes do app (botões, chips, campos, Snackbar...) -->
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Producao.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Producao.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Producao.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.Producao.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.Producao.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.Producao.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.Producao.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.Producao.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.Producao.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.Producao.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.Producao.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.Producao.LabelSmall</item>
+
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Producao.Dialogo</item>
     </style>
 
-    <!-- ===================== Componentes ===================== -->
-
-    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="titleTextColor">@color/branco</item>
-        <item name="navigationIconTint">@color/branco</item>
+    <!-- Diálogos: botões em preto (ação de confirmação) sobre fundo branco -->
+    <style name="ThemeOverlay.Producao.Dialogo" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/preto</item>
+        <item name="colorSurface">@color/branco</item>
+        <item name="colorSurfaceContainerHigh">@color/branco</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Producao.Card</item>
     </style>
 
-    <style name="Widget.App.Card" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardBackgroundColor">?attr/colorSurface</item>
-        <item name="cardCornerRadius">@dimen/raio_card</item>
-        <item name="cardElevation">2dp</item>
+    <!-- ===================== Formas ===================== -->
+
+    <style name="ShapeAppearance.Producao.Pilula" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
-    <style name="Widget.App.Card.Contorno" parent="Widget.Material3.CardView.Outlined">
-        <item name="cardBackgroundColor">?attr/colorSurface</item>
-        <item name="cardCornerRadius">@dimen/raio_card</item>
+    <style name="ShapeAppearance.Producao.Card" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/raio_card</item>
     </style>
 
-    <style name="Widget.App.Button.Grande" parent="Widget.Material3.Button">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">@dimen/altura_toque_minima</item>
-        <item name="android:textSize">16sp</item>
+    <!-- ===================== Tipografia ===================== -->
+
+    <style name="TextAppearance.Producao.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="fontFamily">@font/manrope_extrabold</item>
     </style>
 
-    <style name="Widget.App.Button.Grande.Contorno" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">@dimen/altura_toque_minima</item>
-        <item name="android:textSize">16sp</item>
+    <style name="TextAppearance.Producao.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="fontFamily">@font/manrope_extrabold</item>
     </style>
 
-    <style name="Widget.App.Button.Grande.Contorno.Perigo" parent="Widget.App.Button.Grande.Contorno">
-        <item name="android:textColor">@color/perigo</item>
-        <item name="iconTint">@color/perigo</item>
-        <item name="strokeColor">@color/perigo</item>
+    <style name="TextAppearance.Producao.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="fontFamily">@font/manrope_extrabold</item>
     </style>
 
-    <style name="Widget.App.Button.Grande.Tonal" parent="Widget.Material3.Button.TonalButton">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">@dimen/altura_toque_minima</item>
-        <item name="android:textSize">16sp</item>
+    <style name="TextAppearance.Producao.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/manrope_bold</item>
+        <item name="fontFamily">@font/manrope_bold</item>
     </style>
 
-    <style name="Widget.App.Button.Prioridade" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:minHeight">@dimen/altura_toque_minima</item>
-        <item name="android:textSize">15sp</item>
+    <style name="TextAppearance.Producao.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
     </style>
 
-    <style name="Widget.App.Chip.Filtro" parent="Widget.Material3.Chip.Filter">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="chipMinHeight">44dp</item>
-        <item name="android:textSize">15sp</item>
+    <style name="TextAppearance.Producao.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
     </style>
 
-    <!-- ===================== Estilos de texto e layout ===================== -->
-
-    <style name="App.TituloSecao" parent="">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">@dimen/espaco_pequeno</item>
-        <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
-        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:letterSpacing">0.08</item>
+    <style name="TextAppearance.Producao.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
     </style>
 
-    <style name="App.RotuloCampo" parent="">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">@dimen/espaco_pequeno</item>
-        <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
+    <style name="TextAppearance.Producao.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
     </style>
 
-    <style name="App.RotuloDetalhe" parent="">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
-        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    <style name="TextAppearance.Producao.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
     </style>
 
-    <style name="App.ValorDetalhe" parent="">
+    <style name="TextAppearance.Producao.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <style name="TextAppearance.Producao.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <style name="TextAppearance.Producao.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <!-- Títulos grandes de tela: Manrope 800 -->
+    <style name="TextAppearance.Producao.TituloTela" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="fontFamily">@font/manrope_extrabold</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/preto</item>
+    </style>
+
+    <!-- Título de item/card: família Manrope com textStyle bold (= peso 700) -->
+    <style name="TextAppearance.Producao.TituloItem" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/preto</item>
+    </style>
+
+    <!-- ===================== Textos (estilos de view) ===================== -->
+
+    <style name="Producao.TextViewPadrao" parent="android:Widget.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.Producao.Padrao</item>
+    </style>
+
+    <!--
+        Aparência padrão dos TextViews: Inter 14sp, SEM lineHeight fixo. (As aparências do
+        Material 3 trazem lineHeight, que o MaterialTextView aplica e que faria um título de
+        25sp ficar com linhas a cada 20sp, sobrepostas.)
+    -->
+    <style name="TextAppearance.Producao.Padrao" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/preto</item>
+    </style>
+
+    <!-- Campo de texto digitável: Inter 16sp -->
+    <style name="Producao.Entrada" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/preto</item>
     </style>
 
-    <style name="App.Tag" parent="">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/bg_tag</item>
-        <item name="android:paddingStart">10dp</item>
-        <item name="android:paddingEnd">10dp</item>
-        <item name="android:paddingTop">3dp</item>
-        <item name="android:paddingBottom">3dp</item>
-        <item name="android:textAppearance">?attr/textAppearanceLabelMedium</item>
-        <item name="android:textColor">@color/branco</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="App.ResumoColuna" parent="">
+    <!-- Ação rápida do painel: círculo de 64dp com rótulo embaixo -->
+    <style name="Producao.AcaoRapida" parent="">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:orientation">vertical</item>
+        <item name="android:paddingTop">@dimen/espaco_pequeno</item>
+        <item name="android:paddingBottom">@dimen/espaco_pequeno</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
-    <style name="App.ResumoNumero" parent="">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">?attr/textAppearanceHeadlineMedium</item>
-        <item name="android:textStyle">bold</item>
+    <style name="Producao.AcaoRapida.Icone" parent="">
+        <item name="android:layout_width">@dimen/tamanho_acao_rapida</item>
+        <item name="android:layout_height">@dimen/tamanho_acao_rapida</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:background">@drawable/bg_circulo</item>
+        <item name="android:backgroundTint">@color/superficie_cinza</item>
+        <item name="tint">@color/preto</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:importantForAccessibility">no</item>
     </style>
 
-    <style name="App.ResumoRotulo" parent="">
+    <style name="Producao.AcaoRapida.Rotulo" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/espaco_pequeno</item>
         <item name="android:gravity">center</item>
-        <item name="android:textAppearance">?attr/textAppearanceLabelMedium</item>
-        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/preto</item>
     </style>
 
-    <style name="App.DivisorVertical" parent="">
-        <item name="android:layout_width">1dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">?attr/colorOutline</item>
-        <item name="android:alpha">0.5</item>
+    <!-- Bloco de categoria do formulário (104dp). Selecionado: borda vermelha + fundo vermelho suave -->
+    <style name="Producao.BlocoCategoria" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/tamanho_bloco_categoria</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/bg_bloco_categoria</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/espaco_pequeno</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
     </style>
 
-    <style name="App.BarraAcoes" parent="">
+    <style name="Producao.BlocoCategoria.Icone" parent="">
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="tint">@color/selector_bloco_conteudo</item>
+    </style>
+
+    <style name="Producao.BlocoCategoria.Rotulo" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/espaco_pequeno</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/selector_bloco_conteudo</item>
+    </style>
+
+    <!-- Indicador do item ativo da navegação inferior (pílula vermelho suave) -->
+    <style name="Producao.IndicadorNavegacao" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/vermelho_suave</item>
+    </style>
+
+    <style name="Producao.Texto" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Título de seção: Manrope 800, 18sp -->
+    <style name="Producao.Texto.Secao" parent="Producao.Texto">
+        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="fontFamily">@font/manrope_extrabold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/preto</item>
+    </style>
+
+    <!-- Rótulo pequeno em caixa alta (ex.: HOJE, LISTA DE CONTROLE) -->
+    <style name="Producao.Texto.Sobretitulo" parent="Producao.Texto">
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/texto_secundario</item>
+    </style>
+
+    <!-- Link em vermelho escuro -->
+    <style name="Producao.Texto.Link" parent="Producao.Texto">
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/vermelho_escuro</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="Producao.Texto.Secundario" parent="Producao.Texto">
+        <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+        <item name="android:textColor">@color/texto_secundario</item>
+    </style>
+
+    <!-- Rótulo e valor da tela de detalhes -->
+    <style name="Producao.Texto.Rotulo" parent="Producao.Texto">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/texto_secundario</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Producao.Texto.Valor" parent="Producao.Texto">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Producao.BodyLarge</item>
+        <item name="android:textColor">@color/preto</item>
+    </style>
+
+    <!-- Rótulo de campo do formulário -->
+    <style name="Producao.Texto.RotuloCampo" parent="Producao.Texto">
+        <item name="android:layout_marginBottom">@dimen/espaco_pequeno</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/preto</item>
+    </style>
+
+    <!-- Pílula de prioridade/status (fundo e cor do texto aplicados em código, ver EstiloVisual) -->
+    <style name="Producao.Pilula" parent="Producao.Texto">
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">26dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:drawablePadding">4dp</item>
+    </style>
+
+    <!-- ===================== Componentes ===================== -->
+
+    <!-- Toolbar clara (fundo branco, ícones pretos) -->
+    <style name="Widget.Producao.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/branco</item>
+        <item name="titleTextAppearance">@style/TextAppearance.Producao.TitleLarge</item>
+        <item name="titleTextColor">@color/preto</item>
+        <item name="navigationIconTint">@color/preto</item>
+    </style>
+
+    <!-- Card branco com cantos de 18dp e contorno suave -->
+    <style name="Widget.Producao.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">@color/branco</item>
+        <item name="cardCornerRadius">@dimen/raio_card</item>
+        <item name="strokeColor">@color/divisoria</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <!-- Botão principal vermelho, 60dp, cantos 18dp -->
+    <style name="Widget.Producao.Botao.Principal" parent="Widget.Material3.Button">
+        <item name="iconGravity">textStart</item>
+        <item name="android:layout_height">@dimen/altura_botao_principal</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="backgroundTint">@color/vermelho</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="iconTint">@color/branco</item>
+        <item name="cornerRadius">@dimen/raio_card</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+    </style>
+
+    <!-- Botão preto (ex.: Finalizar) -->
+    <style name="Widget.Producao.Botao.Preto" parent="Widget.Producao.Botao.Principal">
+        <item name="backgroundTint">@color/preto</item>
+    </style>
+
+    <!-- Botão com contorno preto (ex.: Salvar rascunho, Editar) -->
+    <style name="Widget.Producao.Botao.Contorno" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="iconGravity">textStart</item>
+        <item name="android:layout_height">@dimen/altura_botao_principal</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="strokeColor">@color/preto</item>
+        <item name="strokeWidth">1.5dp</item>
+        <item name="android:textColor">@color/preto</item>
+        <item name="iconTint">@color/preto</item>
+        <item name="cornerRadius">@dimen/raio_card</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+    </style>
+
+    <!-- Botão com contorno vermelho (ex.: Excluir) -->
+    <style name="Widget.Producao.Botao.Contorno.Perigo" parent="Widget.Producao.Botao.Contorno">
+        <item name="strokeColor">@color/vermelho</item>
+        <item name="android:textColor">@color/vermelho_escuro</item>
+        <item name="iconTint">@color/vermelho_escuro</item>
+    </style>
+
+    <!-- Botão flutuante estendido: pílula vermelha de 60dp -->
+    <style name="Widget.Producao.Fab" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/altura_botao_principal</item>
+        <item name="backgroundTint">@color/vermelho</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="iconTint">@color/branco</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Producao.Pilula</item>
+        <item name="shapeAppearanceOverlay">@null</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+    </style>
+
+    <!-- Botão circular só com ícone (cabeçalhos) -->
+    <style name="Widget.Producao.BotaoIcone" parent="Widget.Material3.Button.IconButton.Filled">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconSize">22dp</item>
+        <item name="backgroundTint">@color/branco_18</item>
+        <item name="iconTint">@color/branco</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Producao.Pilula</item>
+    </style>
+
+    <!-- Botão de resposta do checklist (Sim / Não / N/A). Cores aplicadas em código. -->
+    <style name="Widget.Producao.Botao.Resposta" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/altura_resposta</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">@dimen/raio_campo</item>
+        <item name="strokeWidth">1.5dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+    </style>
+
+    <!-- Segmento do controle de prioridade (marcado = vermelho com texto branco) -->
+    <style name="Widget.Producao.Botao.Segmento" parent="Widget.Material3.Button.TextButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:checkable">true</item>
+        <item name="backgroundTint">@color/selector_segmento_fundo</item>
+        <item name="android:textColor">@color/selector_segmento_texto</item>
+        <item name="rippleColor">@color/preto_22</item>
+        <item name="cornerRadius">@dimen/raio_quadrado_icone</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+    </style>
+
+    <!-- Pílula de filtro da lista (selecionada = preta; demais = contorno cinza) -->
+    <style name="Widget.Producao.Chip.Filtro" parent="Widget.Material3.Chip.Filter">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="chipMinHeight">44dp</item>
+        <item name="chipBackgroundColor">@color/selector_filtro_fundo</item>
+        <item name="chipStrokeColor">@color/selector_filtro_borda</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">@color/selector_filtro_texto</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipIconVisible">false</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Producao.Pilula</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <!-- Campo de texto: caixa com cantos 14dp; foco com borda preta de 1.5dp -->
+    <style name="Widget.Producao.Campo" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">@dimen/raio_campo</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/raio_campo</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/raio_campo</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/raio_campo</item>
+        <item name="boxStrokeColor">@color/selector_campo_borda</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1.5dp</item>
+        <item name="hintTextColor">@color/preto</item>
+        <item name="android:textColorHint">@color/texto_secundario</item>
+        <item name="boxBackgroundColor">@color/branco</item>
+    </style>
+
+    <!-- Campo com fundo cinza claro (Setor, Descrição) -->
+    <style name="Widget.Producao.Campo.Cinza" parent="Widget.Producao.Campo">
+        <item name="boxBackgroundColor">@color/fundo_cinza</item>
+    </style>
+
+    <!-- Barra fixa no rodapé -->
+    <style name="Producao.BarraRodape" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">bottom</item>
-        <item name="android:background">?attr/colorSurface</item>
-        <item name="android:elevation">8dp</item>
+        <item name="android:background">@drawable/bg_barra_rodape</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingStart">@dimen/espaco_grande</item>
-        <item name="android:paddingEnd">@dimen/espaco_grande</item>
+        <item name="android:paddingStart">@dimen/espaco_tela</item>
+        <item name="android:paddingEnd">@dimen/espaco_tela</item>
         <item name="android:paddingTop">@dimen/espaco_medio</item>
         <item name="android:paddingBottom">@dimen/espaco_medio</item>
     </style>

@@ -19,4 +19,16 @@ public final class FormatadorData {
         // SimpleDateFormat não é thread-safe, por isso uma instância por chamada.
         return new SimpleDateFormat("dd/MM/yyyy HH:mm", PT_BR).format(new Date(timestamp));
     }
+
+    /** Hora no formato HH:mm (usada nas listas, onde os registros costumam ser do mesmo dia). */
+    @NonNull
+    public static String formatarHora(long timestamp) {
+        return new SimpleDateFormat("HH:mm", PT_BR).format(new Date(timestamp));
+    }
+
+    /** Indica se o instante pertence ao dia de hoje. */
+    public static boolean ehHoje(long timestamp) {
+        SimpleDateFormat dia = new SimpleDateFormat("yyyyMMdd", PT_BR);
+        return dia.format(new Date(timestamp)).equals(dia.format(new Date()));
+    }
 }

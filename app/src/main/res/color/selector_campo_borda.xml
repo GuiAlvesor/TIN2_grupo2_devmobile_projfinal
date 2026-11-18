@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Borda do campo: com foco = preta, sem foco = cinza -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/preto" android:state_focused="true" />
+    <item android:color="@color/cinza_borda" />
+</selector>

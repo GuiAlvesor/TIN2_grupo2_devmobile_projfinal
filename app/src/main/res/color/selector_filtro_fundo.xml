@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pílula de filtro: selecionada = preta, demais = branca -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/preto" android:state_checked="true" />
+    <item android:color="@color/branco" />
+</selector>

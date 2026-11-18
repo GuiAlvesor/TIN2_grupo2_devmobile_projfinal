@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bloco de categoria do formulário: selecionado = borda vermelha 2dp + fundo vermelho suave -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/vermelho_suave" />
+            <stroke android:width="2dp" android:color="@color/vermelho" />
+            <corners android:radius="@dimen/raio_campo" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/branco" />
+            <stroke android:width="1dp" android:color="@color/cinza_borda" />
+            <corners android:radius="@dimen/raio_campo" />
+        </shape>
+    </item>
+</selector>

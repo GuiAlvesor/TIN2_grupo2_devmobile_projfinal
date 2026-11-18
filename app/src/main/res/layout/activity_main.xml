@@ -1,196 +1,435 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Tela inicial: cabeçalho, resumo, atalhos por categoria e ações principais -->
+<!--
+    Painel inicial: cabeçalho vermelho, pendentes do turno, ações rápidas,
+    checklist em andamento, dica de EPIs, registros recentes e navegação inferior.
+-->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
+    android:background="@color/branco"
     tools:context=".MainActivity">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/rolagem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_marginBottom="80dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/espaco_grande">
+            android:paddingBottom="@dimen/espaco_extra">
 
-            <!-- Cabeçalho -->
+            <!-- ============ Cabeçalho vermelho ============ -->
             <LinearLayout
                 android:id="@+id/appBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
+                android:background="@drawable/bg_cabecalho_vermelho"
                 android:orientation="vertical"
-                android:paddingStart="@dimen/espaco_grande"
+                android:paddingStart="@dimen/espaco_tela"
                 android:paddingTop="@dimen/espaco_grande"
-                android:paddingEnd="@dimen/espaco_grande"
-                android:paddingBottom="48dp">
-
-                <ImageView
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:contentDescription="@null"
-                    app:srcCompat="@drawable/ic_factory"
-                    app:tint="?attr/colorSecondary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/espaco_medio"
-                    android:text="@string/app_name"
-                    android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:alpha="0.85"
-                    android:text="@string/main_subtitulo"
-                    android:textAppearance="?attr/textAppearanceBodyLarge"
-                    android:textColor="?attr/colorOnPrimary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/espaco_medio"
-                    android:background="@drawable/bg_tag"
-                    android:backgroundTint="@color/branco_translucido"
-                    android:paddingStart="12dp"
-                    android:paddingTop="4dp"
-                    android:paddingEnd="12dp"
-                    android:paddingBottom="4dp"
-                    android:text="@string/main_selo_offline"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    android:textColor="?attr/colorOnPrimary" />
-            </LinearLayout>
-
-            <!-- Card de resumo sobreposto ao cabeçalho -->
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.App.Card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/espaco_grande"
-                android:layout_marginTop="-32dp"
-                android:layout_marginEnd="@dimen/espaco_grande"
-                app:cardElevation="4dp">
+                android:paddingEnd="@dimen/espaco_tela"
+                android:paddingBottom="28dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
-                    android:paddingTop="@dimen/espaco_grande"
-                    android:paddingBottom="@dimen/espaco_grande">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <LinearLayout style="@style/App.ResumoColuna">
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_circulo"
+                        android:backgroundTint="@color/branco_18"
+                        android:contentDescription="@string/app_name"
+                        android:padding="12dp"
+                        app:srcCompat="@drawable/ic_factory"
+                        app:tint="@color/branco" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnBuscar"
+                        style="@style/Widget.Producao.BotaoIcone"
+                        android:contentDescription="@string/acao_buscar"
+                        app:icon="@drawable/ic_search" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAjuda"
+                        style="@style/Widget.Producao.BotaoIcone"
+                        android:layout_marginStart="@dimen/espaco_pequeno"
+                        android:contentDescription="@string/acao_ajuda"
+                        app:icon="@drawable/ic_help" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Producao.Texto"
+                    android:layout_marginTop="@dimen/espaco_tela"
+                    android:fontFamily="@font/manrope_extrabold"
+                    android:text="@string/main_saudacao"
+                    android:textColor="@color/branco"
+                    android:textSize="26sp"
+                    app:fontFamily="@font/manrope_extrabold" />
+
+                <TextView
+                    style="@style/Producao.Texto"
+                    android:layout_marginTop="2dp"
+                    android:alpha="0.9"
+                    android:text="@string/main_registros_producao"
+                    android:textColor="@color/branco"
+                    android:textSize="15sp" />
+
+                <TextView
+                    style="@style/Producao.Texto"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_chip_offline"
+                    android:fontFamily="@font/inter_semibold"
+                    android:paddingStart="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="6dp"
+                    android:text="@string/main_selo_offline_dados"
+                    android:textColor="@color/branco"
+                    android:textSize="13sp"
+                    app:fontFamily="@font/inter_semibold" />
+            </LinearLayout>
+
+            <!-- ============ Pendentes do turno ============ -->
+            <LinearLayout
+                android:id="@+id/areaPendentes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/espaco_tela"
+                android:paddingTop="@dimen/espaco_tela"
+                android:paddingEnd="@dimen/espaco_tela"
+                android:paddingBottom="@dimen/espaco_grande">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/Producao.Texto"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="@string/main_pendentes_turno"
+                        android:textColor="@color/texto_secundario"
+                        android:textSize="15sp"
+                        app:fontFamily="@font/inter_semibold" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@null"
+                        app:srcCompat="@drawable/ic_chevron_right"
+                        app:tint="@color/texto_secundario" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvQtdPendentes"
+                    style="@style/Producao.Texto"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/manrope_extrabold"
+                    android:textColor="@color/preto"
+                    android:textSize="40sp"
+                    app:fontFamily="@font/manrope_extrabold"
+                    tools:text="3 registros" />
+
+                <TextView
+                    android:id="@+id/tvResumoPendentes"
+                    style="@style/Producao.Texto"
+                    android:textColor="@color/texto_secundario"
+                    android:textSize="15sp"
+                    tools:text="1 de alta prioridade · 5 no total" />
+            </LinearLayout>
+
+            <!-- ============ Ações rápidas ============ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/espaco_medio"
+                android:paddingEnd="@dimen/espaco_medio">
+
+                <LinearLayout
+                    android:id="@+id/acaoNovoRegistro"
+                    style="@style/Producao.AcaoRapida">
+
+                    <ImageView
+                        style="@style/Producao.AcaoRapida.Icone"
+                        android:backgroundTint="@color/vermelho"
+                        app:srcCompat="@drawable/ic_add"
+                        app:tint="@color/branco" />
+
+                    <TextView
+                        style="@style/Producao.AcaoRapida.Rotulo"
+                        android:text="@string/acao_novo_registro" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/acaoChecklist"
+                    style="@style/Producao.AcaoRapida">
+
+                    <ImageView
+                        style="@style/Producao.AcaoRapida.Icone"
+                        app:srcCompat="@drawable/ic_checklist" />
+
+                    <TextView
+                        style="@style/Producao.AcaoRapida.Rotulo"
+                        android:text="@string/acao_rapida_checklist" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/acaoAnotacao"
+                    style="@style/Producao.AcaoRapida">
+
+                    <ImageView
+                        style="@style/Producao.AcaoRapida.Icone"
+                        app:srcCompat="@drawable/ic_anotacao" />
+
+                    <TextView
+                        style="@style/Producao.AcaoRapida.Rotulo"
+                        android:text="@string/acao_rapida_anotacao" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/acaoRegistros"
+                    style="@style/Producao.AcaoRapida">
+
+                    <ImageView
+                        style="@style/Producao.AcaoRapida.Icone"
+                        app:srcCompat="@drawable/ic_list" />
+
+                    <TextView
+                        style="@style/Producao.AcaoRapida.Rotulo"
+                        android:text="@string/acao_rapida_registros" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ============ Card preto: checklist em andamento ============ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardEmAndamento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/espaco_tela"
+                android:layout_marginTop="@dimen/espaco_extra"
+                android:layout_marginEnd="@dimen/espaco_tela"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/preto"
+                app:cardCornerRadius="@dimen/raio_card_grande"
+                app:cardElevation="0dp"
+                app:rippleColor="@color/branco_18"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/espaco_tela">
+
+                    <TextView
+                        style="@style/Producao.Texto.Sobretitulo"
+                        android:text="@string/main_em_andamento"
+                        android:textColor="@color/branco"
+                        android:alpha="0.7" />
+
+                    <TextView
+                        android:id="@+id/tvEmAndamentoTitulo"
+                        style="@style/Producao.Texto"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="@font/manrope_extrabold"
+                        android:textColor="@color/branco"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/manrope_extrabold"
+                        tools:text="Conferência de matéria-prima" />
+
+                    <TextView
+                        android:id="@+id/tvEmAndamentoSetor"
+                        style="@style/Producao.Texto"
+                        android:layout_marginTop="2dp"
+                        android:alpha="0.7"
+                        android:textColor="@color/branco"
+                        android:textSize="14sp"
+                        tools:text="Almoxarifado" />
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressoEmAndamento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/espaco_grande"
+                        android:max="100"
+                        app:indicatorColor="@color/vermelho_progresso"
+                        app:trackColor="@color/preto_trilha"
+                        app:indicatorTrackGapSize="0dp"
+                        app:trackCornerRadius="4dp"
+                        app:trackStopIndicatorSize="0dp"
+                        app:trackThickness="8dp"
+                        tools:progress="50" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/espaco_medio"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tvTotal"
-                            style="@style/App.ResumoNumero"
-                            android:textColor="?attr/colorPrimary"
-                            tools:text="12" />
+                            android:id="@+id/tvEmAndamentoItens"
+                            style="@style/Producao.Texto"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:textColor="@color/branco"
+                            android:textSize="14sp"
+                            tools:text="2 de 4 itens" />
 
                         <TextView
-                            style="@style/App.ResumoRotulo"
-                            android:text="@string/resumo_total" />
-                    </LinearLayout>
-
-                    <View style="@style/App.DivisorVertical" />
-
-                    <LinearLayout style="@style/App.ResumoColuna">
-
-                        <TextView
-                            android:id="@+id/tvPendentes"
-                            style="@style/App.ResumoNumero"
-                            android:textColor="@color/prioridade_media"
-                            tools:text="5" />
-
-                        <TextView
-                            style="@style/App.ResumoRotulo"
-                            android:text="@string/resumo_pendentes" />
-                    </LinearLayout>
-
-                    <View style="@style/App.DivisorVertical" />
-
-                    <LinearLayout style="@style/App.ResumoColuna">
-
-                        <TextView
-                            android:id="@+id/tvPrioridadeAlta"
-                            style="@style/App.ResumoNumero"
-                            android:textColor="@color/prioridade_alta"
-                            tools:text="2" />
-
-                        <TextView
-                            style="@style/App.ResumoRotulo"
-                            android:text="@string/resumo_alta_pendentes" />
+                            style="@style/Producao.Texto"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="@string/acao_continuar"
+                            android:textColor="@color/branco"
+                            android:textSize="15sp"
+                            app:fontFamily="@font/inter_bold" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Categorias -->
-            <TextView
-                style="@style/App.TituloSecao"
-                android:layout_marginStart="@dimen/espaco_grande"
-                android:layout_marginTop="@dimen/espaco_extra"
-                android:text="@string/main_secao_categorias" />
-
-            <include
-                android:id="@+id/cardCategoriaRegistros"
-                layout="@layout/item_categoria_resumo" />
-
-            <include
-                android:id="@+id/cardCategoriaListas"
-                layout="@layout/item_categoria_resumo" />
-
-            <include
-                android:id="@+id/cardCategoriaAnotacoes"
-                layout="@layout/item_categoria_resumo" />
-
-            <!-- Ações principais -->
-            <TextView
-                style="@style/App.TituloSecao"
-                android:layout_marginStart="@dimen/espaco_grande"
-                android:layout_marginTop="@dimen/espaco_extra"
-                android:text="@string/main_secao_acoes" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNovoRegistro"
-                style="@style/Widget.App.Button.Grande"
-                android:layout_width="match_parent"
-                android:layout_marginStart="@dimen/espaco_grande"
-                android:layout_marginTop="@dimen/espaco_medio"
-                android:layout_marginEnd="@dimen/espaco_grande"
-                android:text="@string/acao_novo_registro"
-                app:icon="@drawable/ic_add" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnVerRegistros"
-                style="@style/Widget.App.Button.Grande.Contorno"
-                android:layout_width="match_parent"
-                android:layout_marginStart="@dimen/espaco_grande"
-                android:layout_marginTop="@dimen/espaco_medio"
-                android:layout_marginEnd="@dimen/espaco_grande"
-                android:text="@string/acao_ver_registros"
-                app:icon="@drawable/ic_list" />
-
-            <TextView
+            <!-- ============ Card ilustrativo: conferência de EPIs ============ -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/espaco_grande"
+                android:layout_marginStart="@dimen/espaco_tela"
+                android:layout_marginTop="@dimen/espaco_grande"
+                android:layout_marginEnd="@dimen/espaco_tela"
+                app:cardBackgroundColor="@color/vermelho_suave"
+                app:cardCornerRadius="@dimen/raio_card_grande"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/espaco_grande">
+
+                    <ImageView
+                        android:layout_width="88dp"
+                        android:layout_height="88dp"
+                        android:contentDescription="@null"
+                        app:srcCompat="@drawable/il_epi" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/espaco_grande"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Producao.Texto"
+                            android:fontFamily="@font/manrope_extrabold"
+                            android:text="@string/main_card_epi_titulo"
+                            android:textColor="@color/preto"
+                            android:textSize="17sp"
+                            app:fontFamily="@font/manrope_extrabold" />
+
+                        <TextView
+                            style="@style/Producao.Texto"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/main_card_epi_texto"
+                            android:textColor="@color/texto_secundario"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvAbrirChecklistEpi"
+                            style="@style/Producao.Texto.Link"
+                            android:drawablePadding="4dp"
+                            android:text="@string/acao_abrir_checklist"
+                            app:drawableEndCompat="@drawable/ic_arrow_forward"
+                            app:drawableTint="@color/vermelho_escuro" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ============ Recentes ============ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/espaco_extra"
-                android:layout_marginEnd="@dimen/espaco_grande"
-                android:gravity="center"
-                android:text="@string/main_rodape"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/espaco_tela"
+                android:paddingEnd="@dimen/espaco_tela">
+
+                <TextView
+                    style="@style/Producao.Texto.Secao"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/main_recentes" />
+
+                <TextView
+                    android:id="@+id/tvVerTodos"
+                    style="@style/Producao.Texto.Link"
+                    android:paddingStart="@dimen/espaco_pequeno"
+                    android:paddingEnd="@dimen/espaco_pequeno"
+                    android:text="@string/acao_ver_todos" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/containerRecentes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/espaco_tela"
+                android:paddingEnd="@dimen/espaco_tela" />
+
+            <TextView
+                android:id="@+id/tvRecentesVazio"
+                style="@style/Producao.Texto.Secundario"
+                android:layout_width="match_parent"
+                android:paddingStart="@dimen/espaco_tela"
+                android:paddingTop="@dimen/espaco_pequeno"
+                android:paddingEnd="@dimen/espaco_tela"
+                android:text="@string/main_recentes_vazio"
+                android:visibility="gone" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- ============ Navegação inferior ============ -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navegacaoInferior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_barra_rodape"
+        app:itemActiveIndicatorStyle="@style/Producao.IndicadorNavegacao"
+        app:itemIconTint="@color/selector_navegacao"
+        app:itemTextColor="@color/selector_navegacao"
+        app:itemTextAppearanceActive="@style/TextAppearance.Producao.LabelMedium"
+        app:itemTextAppearanceInactive="@style/TextAppearance.Producao.LabelMedium"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_navegacao" />
+
+    <!-- Faixa vermelha fixa atrás da status bar (altura definida em código pelos insets) -->
+    <View
+        android:id="@+id/faixaStatusBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:background="@color/vermelho" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

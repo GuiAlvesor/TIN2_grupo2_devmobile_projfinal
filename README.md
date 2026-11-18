@@ -63,6 +63,33 @@ Desenvolver um aplicativo Android em Java que:
 **Solução proposta:** o app *Registro de Produção* permite **cadastrar, visualizar, editar, excluir,
 buscar e filtrar** informações operacionais, classificadas em três categorias (Registro, Lista de
 controle e Anotação), com prioridade (Baixa, Média ou Alta) e status (Pendente ou Concluído).
+As **Listas de controle** podem ser respondidas item a item (Sim / Não / N/A), com registro da
+ação corretiva quando a resposta é "Não".
+
+### Telas
+
+| # | Tela | Activity | O que faz |
+|---|---|---|---|
+| 1 | Painel | `MainActivity` | Pendentes do turno, ações rápidas, checklist em andamento, dica de EPIs, registros recentes e navegação inferior |
+| 2 | Registros | `ListaRegistrosActivity` | Busca, filtros com contador (Todos, Pendentes, Alta, Checklists), cards e exclusão deslizando com "Desfazer" |
+| 3 | Checklist | `ChecklistActivity` | Responde uma Lista de controle (Sim / Não / N/A), com ação corretiva, progresso, rascunho e finalização |
+| 4 | Cadastro / Edição | `FormularioRegistroActivity` | CRUD completo: cria, carrega, atualiza e exclui (lixeira na Toolbar); itens do checklist um por linha |
+| 5 | Detalhes | `DetalheRegistroActivity` | Dados completos, alterar status, editar, excluir e "Abrir checklist" |
+
+### Identidade visual
+
+- **Paleta vermelho · branco · preto:** vermelho `#D7192D` (cor principal e prioridade Alta),
+  vermelho escuro `#B3121F` (textos e links), vermelho suave `#FDECEE` (destaques), preto `#121212`
+  (texto principal, card de contraste, "Finalizar"), cinzas `#5C5C5C`, `#D6D6D6`, `#EDEDED`,
+  `#F6F6F6` e `#F2F2F2`.
+- **Tipografia:** Manrope (títulos e números, pesos 700/800) e Inter (corpo, 400–700). Os arquivos
+  `.ttf` ficam em `res/font/` **dentro do APK** — o app continua 100% offline. Fonte: Google Fonts,
+  licença SIL Open Font License 1.1.
+- **Prioridade sem depender só de cor:** Alta = pílula vermelha preenchida; Média = pílula com
+  contorno preto; Baixa = pílula cinza. Status: Pendente em vermelho escuro com relógio; Concluído
+  em preto com ícone de check.
+- **Formas:** cantos de 14–20 dp em cards e campos, pílulas em etiquetas e filtros, botões principais
+  de 60 dp e áreas de toque de pelo menos 48 dp.
 
 ---
 
@@ -78,16 +105,16 @@ desenvolvimento.
 | MainActivity (Activity principal) | `MainActivity.java` + `activity_main.xml` — declarada no Manifest com `MAIN`/`LAUNCHER` |
 | Pelo menos uma Activity de cadastro | `FormularioRegistroActivity.java` + `activity_formulario_registro.xml` |
 | Pelo menos uma Activity de listagem | `ListaRegistrosActivity.java` + `activity_lista_registros.xml` |
-| Extra | `DetalheRegistroActivity.java` (visualização detalhada) e `BaseActivity.java` (código comum) |
+| Extras | `ChecklistActivity.java` + `activity_checklist.xml` (respostas da Lista de controle), `DetalheRegistroActivity.java` (visualização detalhada) e `BaseActivity.java` (código comum) |
 
 ### 2️⃣ Navegação, Manifest e ciclo de vida
 
 | Requisito | Onde está |
 |---|---|
-| Manifest coerente | `AndroidManifest.xml`: 4 Activities, `label` em cada tela, `parentActivityName` (hierarquia), `exported="false"` nas telas internas e nenhuma permissão de internet |
-| Intents explícitas | Métodos de fábrica `criarIntent(...)`, `criarIntentNovo(...)` e `criarIntentEdicao(...)`, com *extras* (`EXTRA_REGISTRO_ID`, `EXTRA_CATEGORIA`) definidos em `util/Constantes.java` |
-| Retorno entre telas | `registerForActivityResult` (Lista ← Detalhes ← Formulário), devolvendo `RESULTADO_REGISTRO_EXCLUIDO` |
-| Ciclo de vida | `onResume()` recarrega os dados ao voltar para Painel, Lista e Detalhes; `savedInstanceState` preserva campos e filtros na rotação; `BaseActivity` registra `onCreate`, `onStart`, `onResume`, `onPause`, `onStop`, `onRestart` e `onDestroy` no Logcat (tag **CicloDeVida**); `OnBackPressedCallback` no formulário |
+| Manifest coerente | `AndroidManifest.xml`: 5 Activities, `label` em cada tela, `parentActivityName` (hierarquia), `exported="false"` nas telas internas e nenhuma permissão de internet |
+| Intents explícitas | Métodos de fábrica `criarIntent(...)`, `criarIntentNovo(...)` e `criarIntentEdicao(...)`, com *extras* (`EXTRA_REGISTRO_ID`, `EXTRA_CATEGORIA`, `EXTRA_FILTRO`) definidos em `util/Constantes.java` |
+| Retorno entre telas | `registerForActivityResult` (Painel/Lista ← Detalhes ← Formulário), devolvendo `RESULTADO_REGISTRO_EXCLUIDO` |
+| Ciclo de vida | `onResume()` recarrega os dados ao voltar para Painel, Lista e Detalhes; `onSaveInstanceState` preserva categoria/prioridade do formulário e as respostas do checklist na rotação; `BaseActivity` registra `onCreate`, `onStart`, `onResume`, `onPause`, `onStop`, `onRestart` e `onDestroy` no Logcat (tag **CicloDeVida**); `OnBackPressedCallback` no formulário e no checklist |
 
 ### 3️⃣ Persistência de dados em memória (CRUD)
 
@@ -95,15 +122,17 @@ desenvolvimento.
 |---|---|
 | Armazenamento em `ArrayList` | `data/RegistroRepository.java` → `private final List<Registro> registros = new ArrayList<>();` |
 | CRUD completo na Activity de cadastro | `FormularioRegistroActivity`: **C**reate (`salvar()` sem id), **R**ead (carrega o registro pelo id e preenche os campos), **U**pdate (`salvar()` em modo de edição), **D**elete (lixeira na Toolbar → `confirmarExclusao()` / `excluir()`) |
-| CRUD também nas outras telas | Lista (ler, buscar, filtrar, excluir deslizando + desfazer); Detalhes (ler, alterar status, excluir) |
+| CRUD também nas outras telas | Lista (ler, buscar, filtrar, excluir deslizando + desfazer); Detalhes (ler, alterar status, excluir); Checklist (ler e atualizar as respostas, finalizar) |
+| Itens do checklist | `model/ItemChecklist.java` (pergunta + resposta SIM / NAO / NA + observação), guardados numa `List` dentro de cada `Registro` da categoria Lista de controle |
 
 ### 4️⃣ Múltiplas interfaces gráficas (XML)
 
-São 6 layouts em `res/layout`, mais um menu em `res/menu`. Componentes usados: `TextView`,
-`TextInputEditText` (EditText), `ImageView`, `MaterialButton`, `ExtendedFloatingActionButton`,
-`RecyclerView` (lista), `MaterialCardView`, `MaterialToolbar`, `Chip`/`ChipGroup`,
-`MaterialButtonToggleGroup`, `MaterialSwitch`, `HorizontalScrollView`, `NestedScrollView`,
-`CoordinatorLayout`, `AppBarLayout`, `LinearLayout`, `FrameLayout` e `<include>` de layout reutilizável.
+São 8 layouts em `res/layout` (5 telas + 3 itens), 2 menus em `res/menu`, fontes em `res/font` e
+seletores de cor em `res/color`. Componentes usados: `TextView`, `EditText` / `TextInputEditText`,
+`ImageView`, `MaterialButton`, `ExtendedFloatingActionButton`, `RecyclerView` (lista),
+`MaterialCardView`, `MaterialToolbar`, `Chip`/`ChipGroup`, `BottomNavigationView`,
+`LinearProgressIndicator`, `MaterialSwitch`, `MaterialAlertDialog`, `HorizontalScrollView`,
+`NestedScrollView`, `CoordinatorLayout`, `AppBarLayout`, `LinearLayout` e `FrameLayout`.
 
 ### 5️⃣ Feedback ao usuário (Toast / Snackbar)
 
@@ -117,7 +146,8 @@ após cada ação principal. A tabela completa de mensagens está em
 - Nomes de classes e métodos descritivos, em português.
 - Javadoc e comentários em todas as classes.
 - Textos, cores, dimensões e estilos em `res/values` (nada fixo no código).
-- `BaseActivity` concentra o código repetido entre as telas.
+- `BaseActivity` concentra o código repetido entre as telas; `util/EstiloVisual` concentra as
+  pílulas de prioridade/status e o ícone de categoria usados em várias telas.
 - O repositório devolve cópias dos objetos (encapsulamento).
 - Testes unitários (`src/test`) e instrumentados (`src/androidTest`).
 - Evidências (opcional): roteiro de vídeo de até 30 s em [docs/FLUXO.md](docs/FLUXO.md#8-roteiro-para-o-vídeo-de-evidência-até-30-s).
@@ -128,8 +158,8 @@ após cada ação principal. A tabela completa de mensagens está em
 |---|---|
 | Funcionar sem rede | Nenhuma permissão de rede e nenhum serviço externo |
 | Rodar em qualquer Android | `minSdk 21` (Android 5.0) |
-| Fácil utilização em ambiente industrial | Botões de 56 dp (uso com luvas), alto contraste e textos grandes |
-| Apenas dependências Google/Android | Somente AndroidX e Material Components (ver [docs/INSTALACAO.md](docs/INSTALACAO.md#2-dependências-do-projeto)) |
+| Fácil utilização em ambiente industrial | Botões principais de 60 dp e respostas de 52 dp (uso com luvas), áreas de toque ≥ 48 dp, alto contraste e textos grandes |
+| Apenas dependências Google/Android | Somente AndroidX e Material Components; as fontes são arquivos do Google Fonts empacotados no APK (ver [docs/INSTALACAO.md](docs/INSTALACAO.md#2-dependências-do-projeto)) |
 
 ---
 
@@ -147,21 +177,24 @@ TIN2_grupo2_devmobile_projfinal/
 │       ├── main/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/com/example/registroproducao/
-│       │   │   ├── MainActivity.java               ← painel inicial (resumo + atalhos)
-│       │   │   ├── ListaRegistrosActivity.java     ← listagem, busca, filtro, excluir deslizando
+│       │   │   ├── MainActivity.java               ← painel inicial
+│       │   │   ├── ListaRegistrosActivity.java     ← listagem, busca, filtros, excluir deslizando
+│       │   │   ├── ChecklistActivity.java          ← respostas da Lista de controle
 │       │   │   ├── FormularioRegistroActivity.java ← cadastro e edição (CRUD completo)
 │       │   │   ├── DetalheRegistroActivity.java    ← detalhes, alterar status, excluir
-│       │   │   ├── BaseActivity.java               ← código comum: ciclo de vida, toolbar, mensagens
+│       │   │   ├── BaseActivity.java               ← código comum: ciclo de vida, toolbar, insets, mensagens
 │       │   │   ├── adapter/RegistroAdapter.java    ← RecyclerView (ListAdapter + DiffUtil)
 │       │   │   ├── data/RegistroRepository.java    ← CRUD em memória (ArrayList)
-│       │   │   ├── model/                          ← Registro, Categoria, Prioridade
-│       │   │   └── util/                           ← Constantes, FormatadorData, TextWatcherSimples
+│       │   │   ├── model/                          ← Registro, ItemChecklist, Categoria, Prioridade, FiltroLista
+│       │   │   └── util/                           ← Constantes, EstiloVisual, FormatadorData, TextWatcherSimples
 │       │   └── res/
-│       │       ├── drawable/   ← ícones vetoriais e fundos
+│       │       ├── color/      ← seletores de cor (filtros, segmentos, campos, navegação)
+│       │       ├── drawable/   ← ícones vetoriais, formas e ilustração de EPI
+│       │       ├── font/       ← Manrope e Inter (.ttf) + famílias manrope.xml / inter.xml
 │       │       ├── mipmap-*/   ← ícone do aplicativo
-│       │       ├── layout/     ← 4 telas + 2 itens de lista
-│       │       ├── menu/       ← menu da tela de edição
-│       │       └── values/     ← strings, cores, dimensões e tema
+│       │       ├── layout/     ← 5 telas + 3 itens (registro, recente, pergunta do checklist)
+│       │       ├── menu/       ← navegação inferior e menu da tela de edição
+│       │       └── values/     ← strings, cores, dimensões, tema e estilos
 │       ├── test/          ← testes unitários (RegistroRepositoryTest)
 │       └── androidTest/   ← testes instrumentados com Espresso (FormularioRegistroActivityTest)
 ├── gradle/                ← wrapper e catálogo de versões (libs.versions.toml)

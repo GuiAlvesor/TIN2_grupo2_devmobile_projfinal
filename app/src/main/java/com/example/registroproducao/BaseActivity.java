@@ -8,10 +8,12 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.SystemBarStyle;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,10 +36,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Status bar com ícones claros (combina com a barra superior azul).
+        // Ícones claros na status bar sobre cabeçalhos vermelhos; escuros sobre cabeçalhos brancos.
+        // No Android 5.x (sem ícones escuros) a barra recebe um véu escuro para manter a leitura.
+        int veuEscuro = ContextCompat.getColor(this, R.color.preto_25);
         EdgeToEdge.enable(this,
-                SystemBarStyle.dark(Color.TRANSPARENT),
-                SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
+                usaCabecalhoEscuro()
+                        ? SystemBarStyle.dark(Color.TRANSPARENT)
+                        : SystemBarStyle.light(Color.TRANSPARENT, veuEscuro),
+                SystemBarStyle.light(Color.TRANSPARENT, veuEscuro));
         registrarCiclo("onCreate" + (savedInstanceState != null ? " (estado restaurado)" : ""));
     }
 
@@ -83,13 +89,34 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     // ===================== Utilitários de interface =====================
 
+    /**
+     * Indica se a tela tem cabeçalho escuro/vermelho no topo (ícones claros na status bar).
+     * Telas com cabeçalho branco mantêm o padrão {@code false}.
+     */
+    protected boolean usaCabecalhoEscuro() {
+        return false;
+    }
+
     /** Configura a Toolbar: título e botão de voltar que respeita o OnBackPressedDispatcher. */
     protected void configurarToolbar(@NonNull MaterialToolbar toolbar, @StringRes int titulo,
                                      boolean exibirVoltar) {
-        toolbar.setTitle(titulo);
-        if (exibirVoltar) {
-            toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-            toolbar.setNavigationContentDescription(R.string.acao_voltar);
+        configurarToolbar(toolbar, titulo, exibirVoltar ? R.drawable.ic_arrow_back : 0, R.string.acao_voltar);
+    }
+
+    /**
+     * Configura a Toolbar com um ícone de navegação específico (ex.: X para fechar o formulário).
+     * Use {@code 0} em {@code titulo} para não exibir título e em {@code icone} para não exibir ícone.
+     */
+    protected void configurarToolbar(@NonNull MaterialToolbar toolbar, @StringRes int titulo,
+                                     @DrawableRes int icone, @StringRes int descricaoIcone) {
+        if (titulo != 0) {
+            toolbar.setTitle(titulo);
+        } else {
+            toolbar.setTitle(null);
+        }
+        if (icone != 0) {
+            toolbar.setNavigationIcon(icone);
+            toolbar.setNavigationContentDescription(descricaoIcone);
             toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         }
     }
@@ -99,6 +126,16 @@ public abstract class BaseActivity extends AppCompatActivity {
      * a área superior recebe o espaço da status bar e a raiz recebe o espaço inferior e laterais.
      */
     protected void aplicarInsetsDeSistema(@NonNull View areaSuperior, @NonNull View raiz) {
+        aplicarInsetsDeSistema(areaSuperior, raiz, null);
+    }
+
+    /**
+     * Igual ao método acima e, além disso, ajusta a altura de {@code faixaStatusBar} (uma view
+     * fixa no topo, da cor do cabeçalho) para cobrir a status bar. Assim, em telas com cabeçalho
+     * vermelho que rola junto com o conteúdo, os ícones claros da status bar continuam legíveis.
+     */
+    protected void aplicarInsetsDeSistema(@NonNull View areaSuperior, @NonNull View raiz,
+                                          @Nullable View faixaStatusBar) {
         final int topoOriginal = areaSuperior.getPaddingTop();
         final int esquerdaOriginal = raiz.getPaddingLeft();
         final int direitaOriginal = raiz.getPaddingRight();
@@ -118,6 +155,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                     topoOriginal + barras.top,
                     areaSuperior.getPaddingRight(),
                     areaSuperior.getPaddingBottom());
+
+            if (faixaStatusBar != null && faixaStatusBar.getLayoutParams().height != barras.top) {
+                faixaStatusBar.getLayoutParams().height = barras.top;
+                faixaStatusBar.requestLayout();
+            }
             return WindowInsetsCompat.CONSUMED;
         });
     }

@@ -3,11 +3,14 @@ package com.example.registroproducao.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Entidade principal do aplicativo: representa uma informação operacional
  * da produção (registro, lista de controle ou anotação).
+ * Registros da categoria {@link Categoria#LISTA_CONTROLE} também guardam os itens do checklist.
  */
 public class Registro {
 
@@ -20,6 +23,7 @@ public class Registro {
     private boolean concluido;
     private long dataCriacao;
     private long dataAtualizacao;
+    private final List<ItemChecklist> itens = new ArrayList<>();
 
     public Registro() {
     }
@@ -35,6 +39,7 @@ public class Registro {
         this.concluido = outro.concluido;
         this.dataCriacao = outro.dataCriacao;
         this.dataAtualizacao = outro.dataAtualizacao;
+        setItens(outro.itens);
     }
 
     public Registro(String titulo, String descricao, String setor,
@@ -80,6 +85,37 @@ public class Registro {
     public long getDataAtualizacao() { return dataAtualizacao; }
     public void setDataAtualizacao(long dataAtualizacao) { this.dataAtualizacao = dataAtualizacao; }
 
+    // ---------- Itens do checklist ----------
+
+    /** Devolve cópias dos itens (alterações só valem depois de {@link #setItens(List)}). */
+    @NonNull
+    public List<ItemChecklist> getItens() {
+        List<ItemChecklist> copia = new ArrayList<>();
+        for (ItemChecklist item : itens) copia.add(new ItemChecklist(item));
+        return copia;
+    }
+
+    public void setItens(@Nullable List<ItemChecklist> novosItens) {
+        itens.clear();
+        if (novosItens == null) return;
+        for (ItemChecklist item : novosItens) itens.add(new ItemChecklist(item));
+    }
+
+    public int getTotalItens() { return itens.size(); }
+
+    public int getItensRespondidos() {
+        int total = 0;
+        for (ItemChecklist item : itens) {
+            if (item.isRespondido()) total++;
+        }
+        return total;
+    }
+
+    /** Percentual (0 a 100) de itens respondidos. */
+    public int getPercentualRespondido() {
+        return itens.isEmpty() ? 0 : getItensRespondidos() * 100 / itens.size();
+    }
+
     // ---------- Regras auxiliares ----------
 
     /** Indica se o texto informado aparece no título, setor ou descrição (sem diferenciar maiúsculas). */
@@ -99,7 +135,8 @@ public class Registro {
                 && descricao.equals(outro.descricao)
                 && setor.equals(outro.setor)
                 && categoria == outro.categoria
-                && prioridade == outro.prioridade;
+                && prioridade == outro.prioridade
+                && itens.equals(outro.itens);
     }
 
     @Override
@@ -116,7 +153,7 @@ public class Registro {
     @Override
     public int hashCode() {
         return Objects.hash(id, titulo, descricao, setor, categoria, prioridade,
-                concluido, dataCriacao, dataAtualizacao);
+                concluido, dataCriacao, dataAtualizacao, itens);
     }
 
     @NonNull

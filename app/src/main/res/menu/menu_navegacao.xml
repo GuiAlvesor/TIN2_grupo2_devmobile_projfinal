@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Navegação inferior do painel -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navInicio"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_inicio" />
+
+    <item
+        android:id="@+id/navRegistros"
+        android:icon="@drawable/ic_list"
+        android:title="@string/nav_registros" />
+
+    <item
+        android:id="@+id/navChecklists"
+        android:icon="@drawable/ic_checklist"
+        android:title="@string/nav_checklists" />
+
+    <item
+        android:id="@+id/navAjustes"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/nav_ajustes" />
+</menu>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Card de uma pergunta do checklist: número, texto, respostas Sim/Não/N/A e ação corretiva -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Producao.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/espaco_medio">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/espaco_grande">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvNumero"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_circulo"
+                android:backgroundTint="@color/preto"
+                android:fontFamily="@font/manrope_extrabold"
+                android:gravity="center"
+                android:importantForAccessibility="no"
+                android:textColor="@color/branco"
+                android:textSize="14sp"
+                app:fontFamily="@font/manrope_extrabold"
+                tools:text="1" />
+
+            <TextView
+                android:id="@+id/tvPergunta"
+                style="@style/Producao.Texto"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/espaco_medio"
+                android:layout_weight="1"
+                android:fontFamily="@font/manrope_bold"
+                android:textColor="@color/preto"
+                android:textSize="16sp"
+                app:fontFamily="@font/manrope_bold"
+                tools:text="Os operadores estão usando os EPIs obrigatórios?" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSim"
+                style="@style/Widget.Producao.Botao.Resposta"
+                android:layout_marginEnd="@dimen/espaco_pequeno"
+                android:text="@string/resposta_sim" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNao"
+                style="@style/Widget.Producao.Botao.Resposta"
+                android:layout_marginEnd="@dimen/espaco_pequeno"
+                android:text="@string/resposta_nao" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNa"
+                style="@style/Widget.Producao.Botao.Resposta"
+                android:text="@string/resposta_na" />
+        </LinearLayout>
+
+        <!-- Exibido somente quando a resposta é "Não" -->
+        <LinearLayout
+            android:id="@+id/layoutAcaoCorretiva"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/espaco_medio"
+            android:background="@drawable/bg_acao_corretiva"
+            android:orientation="vertical"
+            android:padding="@dimen/espaco_medio"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                style="@style/Producao.Texto"
+                android:drawablePadding="6dp"
+                android:fontFamily="@font/inter_bold"
+                android:gravity="center_vertical"
+                android:text="@string/acao_corretiva_titulo"
+                android:textColor="@color/vermelho_escuro"
+                android:textSize="14sp"
+                app:drawableStartCompat="@drawable/ic_warning"
+                app:drawableTint="@color/vermelho_escuro"
+                app:fontFamily="@font/inter_bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilAcaoCorretiva"
+                style="@style/Widget.Producao.Campo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaco_pequeno"
+                android:hint="@string/hint_acao_corretiva">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAcaoCorretiva"
+                    style="@style/Producao.Entrada"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="300"
+                    android:minLines="2" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -55,6 +55,15 @@
             android:exported="false"
             android:label="@string/titulo_detalhe"
             android:parentActivityName=".ListaRegistrosActivity" />
+
+        <!-- Execução de uma Lista de controle (checklist): respostas Sim / Não / N/A.
+             Aberta pelo painel (card "Em andamento") e pela tela de detalhes. -->
+        <activity
+            android:name=".ChecklistActivity"
+            android:exported="false"
+            android:label="@string/checklist_sobretitulo"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

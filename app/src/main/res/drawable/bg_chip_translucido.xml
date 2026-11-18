@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pílula branca translúcida (18%) sobre o cabeçalho vermelho -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/branco_18" />
+    <corners android:radius="100dp" />
+</shape>

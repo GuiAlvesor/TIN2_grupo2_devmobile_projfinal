@@ -2,16 +2,6 @@
 <resources>
     <string name="app_name">Registro de Produção</string>
 
-    <!-- Tela inicial -->
-    <string name="main_subtitulo">Registros, listas de controle e anotações da produção em um só lugar.</string>
-    <string name="main_selo_offline">● Funciona sem internet</string>
-    <string name="main_secao_categorias">Categorias</string>
-    <string name="main_secao_acoes">Ações rápidas</string>
-    <string name="main_rodape">Os dados ficam armazenados em memória neste dispositivo enquanto o aplicativo estiver aberto.</string>
-    <string name="resumo_total">Total</string>
-    <string name="resumo_pendentes">Pendentes</string>
-    <string name="resumo_alta_pendentes">Alta prioridade</string>
-
     <!-- Títulos das telas -->
     <string name="titulo_lista">Registros</string>
     <string name="titulo_novo">Novo registro</string>
@@ -35,7 +25,6 @@
     <string name="status_pendente">Pendente</string>
 
     <!-- Lista -->
-    <string name="hint_busca">Buscar por título, setor ou descrição</string>
     <string name="filtro_todos">Todos</string>
     <string name="vazio_titulo">Nenhum registro encontrado</string>
     <string name="vazio_mensagem">Altere a busca ou o filtro, ou toque em \"Novo\" para cadastrar.</string>
@@ -51,7 +40,6 @@
     <string name="hint_setor">Setor / linha de produção</string>
     <string name="ajuda_setor">Ex.: Linha 2 - Envase</string>
     <string name="hint_descricao">Descrição / observações</string>
-    <string name="rotulo_concluido">Marcar como concluído</string>
     <string name="campos_obrigatorios">* Campos obrigatórios</string>
     <string name="erro_titulo_obrigatorio">Informe um título</string>
     <string name="erro_titulo_curto">O título deve ter pelo menos %1$d caracteres</string>
@@ -68,9 +56,6 @@
     <string name="acao_voltar">Voltar</string>
     <string name="acao_novo">Novo</string>
     <string name="acao_novo_registro">Novo registro</string>
-    <string name="acao_ver_registros">Ver todos os registros</string>
-    <string name="acao_cadastrar">Cadastrar</string>
-    <string name="acao_salvar_alteracoes">Salvar</string>
     <string name="acao_cancelar">Cancelar</string>
     <string name="acao_editar">Editar</string>
     <string name="acao_excluir">Excluir</string>
@@ -96,4 +81,88 @@
     <string name="msg_alteracoes_descartadas">Alterações descartadas</string>
     <string name="msg_marcado_concluido">Registro marcado como concluído</string>
     <string name="msg_registro_reaberto">Registro reaberto como pendente</string>
+
+    <!-- Painel -->
+    <string name="main_saudacao">Olá, operador</string>
+    <string name="main_registros_producao">Registros da produção</string>
+    <string name="main_selo_offline_dados">● Offline · dados salvos neste aparelho</string>
+    <string name="main_pendentes_turno">Pendentes do turno</string>
+    <string name="main_alta_prioridade">%1$d de alta prioridade</string>
+    <string name="main_no_total">" · %1$d no total"</string>
+    <string name="acao_rapida_checklist">Checklist</string>
+    <string name="acao_rapida_anotacao">Anotação</string>
+    <string name="acao_rapida_registros">Registros</string>
+    <string name="main_em_andamento">Em andamento</string>
+    <string name="main_progresso_itens">%1$d de %2$d itens</string>
+    <string name="acao_continuar">Continuar →</string>
+    <string name="main_card_epi_titulo">Comece o turno pela conferência de EPIs</string>
+    <string name="main_card_epi_texto">Responda o checklist de segurança antes de ligar as máquinas.</string>
+    <string name="acao_abrir_checklist">Abrir checklist</string>
+    <string name="main_recentes">Recentes</string>
+    <string name="acao_ver_todos">Ver todos</string>
+    <string name="main_recentes_vazio">Nenhum registro ainda. Toque em \"Novo registro\" para começar.</string>
+    <string name="nav_inicio">Início</string>
+    <string name="nav_registros">Registros</string>
+    <string name="nav_checklists">Checklists</string>
+    <string name="nav_ajustes">Ajustes</string>
+    <string name="msg_em_breve">Em breve</string>
+    <string name="acao_buscar">Buscar</string>
+    <string name="acao_ajuda">Ajuda</string>
+    <string name="acao_entendi">Entendi</string>
+    <string name="dialogo_ajuda_titulo">Como usar</string>
+    <string name="dialogo_ajuda_mensagem">• Novo registro: anote ocorrências, checklists e observações.\n• Registros: busque, filtre e deslize um item para excluir.\n• Checklists: responda Sim, Não ou N/A; um \"Não\" pede a ação corretiva.\n\nO app funciona sem internet. Os dados ficam na memória deste aparelho enquanto o app estiver aberto.</string>
+    <string name="formato_meta_2">%1$s · %2$s</string>
+    <string name="formato_meta_3">%1$s · %2$s · %3$s</string>
+
+    <!-- Lista -->
+    <string name="hint_busca_registros">Buscar registros</string>
+    <string name="filtro_com_contador">%1$s · %2$d</string>
+    <string name="filtro_pendentes">Pendentes</string>
+    <string name="filtro_alta">Alta</string>
+    <string name="filtro_checklists">Checklists</string>
+    <string name="secao_hoje">Hoje</string>
+    <string name="secao_mais_recentes">Mais recentes</string>
+
+    <!-- Formulário -->
+    <string name="form_titulo_novo">O que você quer registrar?</string>
+    <string name="acao_fechar">Fechar</string>
+    <string name="rotulo_itens">Itens da lista de controle</string>
+    <string name="hint_itens">Um item por linha</string>
+    <string name="ajuda_itens">Deixe em branco para usar os 5 itens padrão de segurança.</string>
+    <string name="rotulo_resolvido">Já foi resolvido</string>
+    <string name="ajuda_resolvido">Marca o registro como concluído</string>
+    <string name="acao_salvar_registro">Salvar registro</string>
+    <string-array name="itens_checklist_padrao">
+        <item>Os operadores estão usando os EPIs obrigatórios?</item>
+        <item>Os extintores estão no lugar e dentro da validade?</item>
+        <item>As saídas de emergência estão desobstruídas?</item>
+        <item>Os botões de parada de emergência foram testados?</item>
+        <item>As proteções das prensas estão instaladas?</item>
+    </string-array>
+
+    <!-- Detalhes -->
+    <string name="titulo_detalhes">Detalhes</string>
+    <string name="rotulo_checklist">Checklist</string>
+
+    <!-- Checklist -->
+    <string name="checklist_sobretitulo">Lista de controle</string>
+    <string name="checklist_progresso">%1$d de %2$d respondidos</string>
+    <string name="checklist_percentual">%1$d%%</string>
+    <string name="resposta_sim">Sim</string>
+    <string name="resposta_nao">Não</string>
+    <string name="resposta_na">N/A</string>
+    <string name="acao_corretiva_titulo">Ação corretiva necessária</string>
+    <string name="hint_acao_corretiva">Descreva o que será feito</string>
+    <string name="erro_acao_corretiva">Descreva a ação corretiva</string>
+    <string name="acao_salvar_rascunho">Salvar rascunho</string>
+    <string name="acao_finalizar">Finalizar</string>
+    <string name="msg_rascunho_salvo">Rascunho salvo</string>
+    <string name="msg_checklist_finalizado">Checklist finalizado e marcado como concluído</string>
+    <string name="msg_acao_corretiva_pendente">Preencha a ação corretiva dos itens marcados como \"Não\"</string>
+    <string name="msg_nao_e_checklist">Este registro não é uma lista de controle</string>
+    <string name="dialogo_finalizar_titulo">Finalizar checklist?</string>
+    <plurals name="dialogo_finalizar_mensagem">
+        <item quantity="one">Ainda há %1$d item sem resposta. Deseja finalizar mesmo assim?</item>
+        <item quantity="other">Ainda há %1$d itens sem resposta. Deseja finalizar mesmo assim?</item>
+    </plurals>
 </resources>

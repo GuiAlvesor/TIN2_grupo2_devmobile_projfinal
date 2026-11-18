@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.registroproducao.model.Categoria;
+import com.example.registroproducao.model.FiltroLista;
+import com.example.registroproducao.model.ItemChecklist;
 import com.example.registroproducao.model.Prioridade;
 import com.example.registroproducao.model.Registro;
 
@@ -81,6 +83,43 @@ public final class RegistroRepository {
             }
         }
         return resultado;
+    }
+
+    /** Filtra por texto (título, setor ou descrição) e por um dos filtros rápidos da listagem. */
+    @NonNull
+    public synchronized List<Registro> filtrarPor(@Nullable String texto, @NonNull FiltroLista filtro) {
+        List<Registro> resultado = new ArrayList<>();
+        for (Registro r : registros) {
+            if (filtro.aceita(r) && r.contemTexto(texto)) {
+                resultado.add(new Registro(r));
+            }
+        }
+        return resultado;
+    }
+
+    public synchronized int contar(@NonNull FiltroLista filtro) {
+        int total = 0;
+        for (Registro r : registros) {
+            if (filtro.aceita(r)) total++;
+        }
+        return total;
+    }
+
+    /** Os {@code quantidade} registros mais recentes (a lista já fica ordenada do mais novo ao mais antigo). */
+    @NonNull
+    public synchronized List<Registro> listarRecentes(int quantidade) {
+        return copiar(registros.subList(0, Math.min(Math.max(quantidade, 0), registros.size())));
+    }
+
+    /** Lista de controle pendente mais recente (exibida no card "Em andamento"), ou {@code null}. */
+    @Nullable
+    public synchronized Registro buscarChecklistEmAndamento() {
+        for (Registro r : registros) {
+            if (r.getCategoria() == Categoria.LISTA_CONTROLE && !r.isConcluido() && r.getTotalItens() > 0) {
+                return new Registro(r);
+            }
+        }
+        return null;
     }
 
     public synchronized int contarTotal() {
@@ -174,19 +213,47 @@ public final class RegistroRepository {
         adicionar(new Registro("Troca de turno - Linha 2",
                 "Máquina 04 operando com ruído anormal no rolamento. Equipe de manutenção avisada.",
                 "Linha 2 - Envase", Categoria.ANOTACAO, Prioridade.ALTA, false));
-        adicionar(new Registro("Checklist de segurança diário",
-                "EPIs conferidos, extintores no lugar, saídas de emergência desobstruídas, "
-                        + "botões de parada testados.",
-                "Linha 1 - Prensas", Categoria.LISTA_CONTROLE, Prioridade.ALTA, true));
+        Registro seguranca = new Registro("Checklist de segurança diário",
+                "Conferência de segurança do início do turno.",
+                "Linha 1 - Prensas", Categoria.LISTA_CONTROLE, Prioridade.ALTA, true);
+        seguranca.setItens(itens(new ItemChecklist.Resposta[]{
+                        ItemChecklist.Resposta.SIM, ItemChecklist.Resposta.SIM, ItemChecklist.Resposta.SIM,
+                        ItemChecklist.Resposta.SIM, ItemChecklist.Resposta.NA},
+                "Os operadores estão usando os EPIs obrigatórios?",
+                "Os extintores estão no lugar e dentro da validade?",
+                "As saídas de emergência estão desobstruídas?",
+                "Os botões de parada de emergência foram testados?",
+                "As proteções das prensas estão instaladas?"));
+        adicionar(seguranca);
         adicionar(new Registro("Parada para setup - Injetora 3",
                 "Setup do molde 115 iniciado às 07h40 e finalizado às 08h25.",
                 "Injeção", Categoria.REGISTRO, Prioridade.MEDIA, true));
-        adicionar(new Registro("Conferência de matéria-prima",
+        Registro materiaPrima = new Registro("Conferência de matéria-prima",
                 "Verificar lote 2026-118 de resina antes de liberar para a produção.",
-                "Almoxarifado", Categoria.LISTA_CONTROLE, Prioridade.MEDIA, false));
+                "Almoxarifado", Categoria.LISTA_CONTROLE, Prioridade.MEDIA, false);
+        materiaPrima.setItens(itens(new ItemChecklist.Resposta[]{
+                        ItemChecklist.Resposta.SIM, ItemChecklist.Resposta.SIM, null, null},
+                "A etiqueta do lote confere com a nota fiscal?",
+                "As embalagens estão íntegras e secas?",
+                "O certificado de qualidade do fornecedor foi recebido?",
+                "A amostra foi enviada para o laboratório?"));
+        adicionar(materiaPrima);
         adicionar(new Registro("Ajuste de temperatura da estufa",
                 "Temperatura ajustada de 180 °C para 175 °C conforme instrução de trabalho IT-042.",
                 "Pintura", Categoria.REGISTRO, Prioridade.BAIXA, false));
+    }
+
+    /** Monta os itens de um checklist de exemplo, com as respostas na mesma ordem das perguntas. */
+    @NonNull
+    private static List<ItemChecklist> itens(@NonNull ItemChecklist.Resposta[] respostas,
+                                             @NonNull String... perguntas) {
+        List<ItemChecklist> lista = new ArrayList<>();
+        for (int i = 0; i < perguntas.length; i++) {
+            ItemChecklist item = new ItemChecklist(perguntas[i]);
+            item.setResposta(i < respostas.length ? respostas[i] : null);
+            lista.add(item);
+        }
+        return lista;
     }
 
     private int indiceDe(int id) {

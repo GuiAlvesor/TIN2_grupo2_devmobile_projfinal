@@ -3,11 +3,23 @@
     <dimen name="espaco_pequeno">8dp</dimen>
     <dimen name="espaco_medio">12dp</dimen>
     <dimen name="espaco_grande">16dp</dimen>
+    <dimen name="espaco_tela">20dp</dimen>
     <dimen name="espaco_extra">24dp</dimen>
 
-    <!-- Áreas de toque maiores que o padrão (48dp), facilitando o uso com luvas -->
-    <dimen name="altura_toque_minima">56dp</dimen>
+    <!-- Áreas de toque de 48dp ou mais (botões principais com 60dp), facilitando o uso com luvas -->
+    <dimen name="altura_botao_principal">60dp</dimen>
+    <dimen name="altura_busca">52dp</dimen>
+    <dimen name="altura_resposta">52dp</dimen>
     <dimen name="altura_barra_acoes">96dp</dimen>
+    <dimen name="tamanho_acao_rapida">64dp</dimen>
+    <dimen name="tamanho_bloco_categoria">104dp</dimen>
+    <dimen name="tamanho_icone_item">44dp</dimen>
+    <dimen name="espessura_divisoria">1dp</dimen>
 
-    <dimen name="raio_card">16dp</dimen>
+    <!-- Cantos -->
+    <dimen name="raio_campo">14dp</dimen>
+    <dimen name="raio_quadrado_icone">12dp</dimen>
+    <dimen name="raio_card">18dp</dimen>
+    <dimen name="raio_card_grande">20dp</dimen>
+    <dimen name="raio_cabecalho">28dp</dimen>
 </resources>

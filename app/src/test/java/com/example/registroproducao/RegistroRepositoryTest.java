@@ -8,12 +8,15 @@ import static org.junit.Assert.assertTrue;
 
 import com.example.registroproducao.data.RegistroRepository;
 import com.example.registroproducao.model.Categoria;
+import com.example.registroproducao.model.FiltroLista;
+import com.example.registroproducao.model.ItemChecklist;
 import com.example.registroproducao.model.Prioridade;
 import com.example.registroproducao.model.Registro;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -144,5 +147,89 @@ public class RegistroRepositoryTest {
 
         repositorio.carregarExemplosSeNecessario();
         assertEquals(quantidade, repositorio.contarTotal());
+    }
+
+    // ===================== Filtros rápidos e checklists =====================
+
+    private Registro checklist(String titulo, boolean concluido, ItemChecklist.Resposta... respostas) {
+        Registro r = novo(titulo, Categoria.LISTA_CONTROLE);
+        r.setConcluido(concluido);
+        List<ItemChecklist> itens = new ArrayList<>();
+        for (int i = 0; i < respostas.length; i++) {
+            ItemChecklist item = new ItemChecklist("Pergunta " + (i + 1));
+            item.setResposta(respostas[i]);
+            itens.add(item);
+        }
+        r.setItens(itens);
+        return r;
+    }
+
+    @Test
+    public void filtrarPor_filtrosRapidosEContadores() {
+        Registro alta = novo("Vazamento de óleo", Categoria.ANOTACAO);
+        alta.setPrioridade(Prioridade.ALTA);
+        repositorio.adicionar(alta);
+        Registro concluido = novo("Setup concluído", Categoria.REGISTRO);
+        concluido.setConcluido(true);
+        repositorio.adicionar(concluido);
+        repositorio.adicionar(checklist("Checklist de EPI", false, (ItemChecklist.Resposta) null));
+
+        assertEquals(3, repositorio.contar(FiltroLista.TODOS));
+        assertEquals(2, repositorio.contar(FiltroLista.PENDENTES));
+        assertEquals(1, repositorio.contar(FiltroLista.ALTA));
+        assertEquals(1, repositorio.contar(FiltroLista.CHECKLISTS));
+
+        assertEquals(1, repositorio.filtrarPor("óleo", FiltroLista.PENDENTES).size());
+        assertEquals(0, repositorio.filtrarPor("setup", FiltroLista.PENDENTES).size());
+        assertEquals("Checklist de EPI", repositorio.filtrarPor("", FiltroLista.CHECKLISTS).get(0).getTitulo());
+    }
+
+    @Test
+    public void checklistEmAndamento_ehOPendenteMaisRecente() {
+        assertNull(repositorio.buscarChecklistEmAndamento());
+
+        repositorio.adicionar(checklist("Antigo", false, ItemChecklist.Resposta.SIM, null));
+        repositorio.adicionar(checklist("Concluído", true, ItemChecklist.Resposta.SIM));
+        repositorio.adicionar(checklist("Recente", false, ItemChecklist.Resposta.NAO, null, null, null));
+
+        Registro emAndamento = repositorio.buscarChecklistEmAndamento();
+        assertNotNull(emAndamento);
+        assertEquals("Recente", emAndamento.getTitulo());
+        assertEquals(1, emAndamento.getItensRespondidos());
+        assertEquals(4, emAndamento.getTotalItens());
+        assertEquals(25, emAndamento.getPercentualRespondido());
+    }
+
+    @Test
+    public void respostasDoChecklist_saoSalvasPeloUpdate() {
+        Registro salvo = repositorio.adicionar(checklist("Ronda", false, null, null));
+
+        List<ItemChecklist> itens = salvo.getItens();
+        itens.get(0).setResposta(ItemChecklist.Resposta.NAO);
+        itens.get(0).setObservacao("Trocar a lâmpada");
+        // Sem setItens + atualizar, nada muda no repositório (os getters devolvem cópias).
+        assertEquals(0, repositorio.buscarPorId(salvo.getId()).getItensRespondidos());
+
+        salvo.setItens(itens);
+        salvo.setConcluido(true);
+        assertTrue(repositorio.atualizar(salvo));
+
+        Registro lido = repositorio.buscarPorId(salvo.getId());
+        assertEquals(ItemChecklist.Resposta.NAO, lido.getItens().get(0).getResposta());
+        assertEquals("Trocar a lâmpada", lido.getItens().get(0).getObservacao());
+        assertTrue(lido.isConcluido());
+    }
+
+    @Test
+    public void listarRecentes_devolveOsMaisNovosPrimeiro() {
+        repositorio.adicionar(novo("Primeiro", Categoria.REGISTRO));
+        repositorio.adicionar(novo("Segundo", Categoria.REGISTRO));
+        repositorio.adicionar(novo("Terceiro", Categoria.REGISTRO));
+
+        List<Registro> recentes = repositorio.listarRecentes(2);
+        assertEquals(2, recentes.size());
+        assertEquals("Terceiro", recentes.get(0).getTitulo());
+        assertEquals("Segundo", recentes.get(1).getTitulo());
+        assertEquals(3, repositorio.listarRecentes(10).size());
     }
 }
