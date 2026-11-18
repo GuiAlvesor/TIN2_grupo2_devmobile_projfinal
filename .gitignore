@@ -10,3 +10,5 @@
 .cxx
 local.properties
 *.apk
+# APK de demonstração versionado só na pasta demo/ (fica fora do .zip de entrega)
+!/demo/*.apk

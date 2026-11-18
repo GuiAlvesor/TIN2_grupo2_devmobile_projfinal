@@ -9,6 +9,7 @@ e guarda os dados **em memória** (`ArrayList`), conforme o enunciado do projeto
 | **README.md** (este arquivo) | Identificação do grupo, objetivo, requisitos e como cada um foi atendido |
 | [docs/INSTALACAO.md](docs/INSTALACAO.md) | Pré-requisitos, dependências, como compilar, executar e testar |
 | [docs/FLUXO.md](docs/FLUXO.md) | Fluxo de telas, navegação, CRUD e mensagens exibidas ao usuário |
+| [demo/](demo/) | `RegistroProducao.apk` (instalação direta para testes) e vídeo demonstrativo de 24 s — **não** fazem parte do .zip de entrega |
 
 ---
 
@@ -27,10 +28,11 @@ e guarda os dados **em memória** (`ArrayList`), conforme o enunciado do projeto
 
 | Nome | RA |
 |---|---|
-| _Nome do integrante 1_ | _000000_ |
-| _Nome do integrante 2_ | _000000_ |
-| _Nome do integrante 3_ | _000000_ |
-| _Nome do integrante 4_ | _000000_ |
+| Marcelo Panini da Silva | 235051 |
+| Luis Gustavo Ferraz Sales | 248236 |
+| Lucas Gomes de Araujo | 237007 |
+| Vinicius Maximus Boy de Araújo | 257958 |
+| Guilherme Alves dos Santos | 247843 |
 
 ---
 
@@ -217,6 +219,10 @@ do projeto (**não** é aceito `.apk`), com o nome no padrão:
 A pasta raiz do projeto deve seguir o padrão `<turma>_grupo<numero>_devmobile_projfinal`
 (`TIN2_grupo2_devmobile_projfinal`), igual ao `rootProject.name` em `settings.gradle.kts`.
 O passo a passo para gerar o .zip está em [docs/INSTALACAO.md](docs/INSTALACAO.md#7-gerando-o-zip-de-entrega).
+
+O .zip **não** deve conter a pasta `demo/` (APK e vídeo), a pasta `.git` nem arquivos de cache e
+de build (`.gradle/`, `.idea/`, `build/`, `app/build/`, `local.properties`). O vídeo demonstrativo
+(opcional) é enviado separadamente.
 
 > ⚠️ Como os dados ficam em memória (requisito do projeto), eles são perdidos quando o aplicativo é
 > encerrado. Na primeira abertura, o app carrega 5 registros de exemplo para facilitar a demonstração.
