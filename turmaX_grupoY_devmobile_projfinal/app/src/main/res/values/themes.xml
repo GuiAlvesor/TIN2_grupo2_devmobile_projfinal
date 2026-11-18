@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Tema base do aplicativo (Material Design 3, sem ActionBar: cada tela usa sua própria Toolbar) -->
+    <style name="Theme.RegistroProducao" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/azul_industrial</item>
+        <item name="colorOnPrimary">@color/branco</item>
+        <item name="colorPrimaryContainer">@color/azul_container</item>
+        <item name="colorOnPrimaryContainer">@color/azul_on_container</item>
+
+        <item name="colorSecondary">@color/laranja_seguranca</item>
+        <item name="colorOnSecondary">@color/quase_preto</item>
+        <item name="colorSecondaryContainer">@color/laranja_container</item>
+        <item name="colorOnSecondaryContainer">@color/quase_preto</item>
+
+        <item name="android:colorBackground">@color/fundo</item>
+        <item name="colorSurface">@color/branco</item>
+        <item name="colorOnSurface">@color/quase_preto</item>
+        <item name="colorSurfaceVariant">@color/superficie_variante</item>
+        <item name="colorOnSurfaceVariant">@color/texto_secundario</item>
+        <item name="colorOutline">@color/contorno</item>
+        <item name="colorError">@color/perigo</item>
+    </style>
+
+    <!-- ===================== Componentes ===================== -->
+
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="titleTextColor">@color/branco</item>
+        <item name="navigationIconTint">@color/branco</item>
+    </style>
+
+    <style name="Widget.App.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardCornerRadius">@dimen/raio_card</item>
+        <item name="cardElevation">2dp</item>
+    </style>
+
+    <style name="Widget.App.Card.Contorno" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardCornerRadius">@dimen/raio_card</item>
+    </style>
+
+    <style name="Widget.App.Button.Grande" parent="Widget.Material3.Button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/altura_toque_minima</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.App.Button.Grande.Contorno" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/altura_toque_minima</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.App.Button.Grande.Contorno.Perigo" parent="Widget.App.Button.Grande.Contorno">
+        <item name="android:textColor">@color/perigo</item>
+        <item name="iconTint">@color/perigo</item>
+        <item name="strokeColor">@color/perigo</item>
+    </style>
+
+    <style name="Widget.App.Button.Grande.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/altura_toque_minima</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.App.Button.Prioridade" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:minHeight">@dimen/altura_toque_minima</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Widget.App.Chip.Filtro" parent="Widget.Material3.Chip.Filter">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="chipMinHeight">44dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- ===================== Estilos de texto e layout ===================== -->
+
+    <style name="App.TituloSecao" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/espaco_pequeno</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.08</item>
+    </style>
+
+    <style name="App.RotuloCampo" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/espaco_pequeno</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="App.RotuloDetalhe" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="App.ValorDetalhe" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="App.Tag" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_tag</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelMedium</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="App.ResumoColuna" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="App.ResumoNumero" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?attr/textAppearanceHeadlineMedium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="App.ResumoRotulo" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelMedium</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="App.DivisorVertical" parent="">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">?attr/colorOutline</item>
+        <item name="android:alpha">0.5</item>
+    </style>
+
+    <style name="App.BarraAcoes" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:background">?attr/colorSurface</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">@dimen/espaco_grande</item>
+        <item name="android:paddingEnd">@dimen/espaco_grande</item>
+        <item name="android:paddingTop">@dimen/espaco_medio</item>
+        <item name="android:paddingBottom">@dimen/espaco_medio</item>
+    </style>
+</resources>

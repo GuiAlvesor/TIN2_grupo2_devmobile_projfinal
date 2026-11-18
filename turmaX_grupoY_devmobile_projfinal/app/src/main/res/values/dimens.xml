@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="espaco_pequeno">8dp</dimen>
+    <dimen name="espaco_medio">12dp</dimen>
+    <dimen name="espaco_grande">16dp</dimen>
+    <dimen name="espaco_extra">24dp</dimen>
+
+    <!-- Áreas de toque maiores que o padrão (48dp), facilitando o uso com luvas -->
+    <dimen name="altura_toque_minima">56dp</dimen>
+    <dimen name="altura_barra_acoes">96dp</dimen>
+
+    <dimen name="raio_card">16dp</dimen>
+</resources>

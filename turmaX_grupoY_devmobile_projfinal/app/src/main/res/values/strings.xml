@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Registro de Produção</string>
+
+    <!-- Tela inicial -->
+    <string name="main_subtitulo">Registros, listas de controle e anotações da produção em um só lugar.</string>
+    <string name="main_selo_offline">● Funciona sem internet</string>
+    <string name="main_secao_categorias">Categorias</string>
+    <string name="main_secao_acoes">Ações rápidas</string>
+    <string name="main_rodape">Os dados ficam armazenados em memória neste dispositivo enquanto o aplicativo estiver aberto.</string>
+    <string name="resumo_total">Total</string>
+    <string name="resumo_pendentes">Pendentes</string>
+    <string name="resumo_alta_pendentes">Alta prioridade</string>
+
+    <!-- Títulos das telas -->
+    <string name="titulo_lista">Registros</string>
+    <string name="titulo_novo">Novo registro</string>
+    <string name="titulo_editar">Editar registro</string>
+    <string name="titulo_detalhe">Detalhes do registro</string>
+
+    <!-- Categorias -->
+    <string name="categoria_registro">Registro</string>
+    <string name="categoria_registro_descricao">Ocorrências, paradas e apontamentos</string>
+    <string name="categoria_lista_controle">Lista de controle</string>
+    <string name="categoria_lista_controle_descricao">Checklists e conferências</string>
+    <string name="categoria_anotacao">Anotação</string>
+    <string name="categoria_anotacao_descricao">Observações operacionais importantes</string>
+
+    <!-- Prioridades e status -->
+    <string name="prioridade_baixa">Baixa</string>
+    <string name="prioridade_media">Média</string>
+    <string name="prioridade_alta">Alta</string>
+    <string name="rotulo_prioridade_valor">Prioridade %1$s</string>
+    <string name="status_concluido">Concluído</string>
+    <string name="status_pendente">Pendente</string>
+
+    <!-- Lista -->
+    <string name="hint_busca">Buscar por título, setor ou descrição</string>
+    <string name="filtro_todos">Todos</string>
+    <string name="vazio_titulo">Nenhum registro encontrado</string>
+    <string name="vazio_mensagem">Altere a busca ou o filtro, ou toque em \"Novo\" para cadastrar.</string>
+    <plurals name="contador_registros">
+        <item quantity="one">%1$d registro</item>
+        <item quantity="other">%1$d registros</item>
+    </plurals>
+
+    <!-- Formulário -->
+    <string name="rotulo_categoria">Categoria *</string>
+    <string name="rotulo_prioridade">Prioridade</string>
+    <string name="hint_titulo">Título *</string>
+    <string name="hint_setor">Setor / linha de produção</string>
+    <string name="ajuda_setor">Ex.: Linha 2 - Envase</string>
+    <string name="hint_descricao">Descrição / observações</string>
+    <string name="rotulo_concluido">Marcar como concluído</string>
+    <string name="campos_obrigatorios">* Campos obrigatórios</string>
+    <string name="erro_titulo_obrigatorio">Informe um título</string>
+    <string name="erro_titulo_curto">O título deve ter pelo menos %1$d caracteres</string>
+
+    <!-- Detalhes -->
+    <string name="rotulo_setor">Setor</string>
+    <string name="rotulo_criado_em">Criado em</string>
+    <string name="rotulo_atualizado_em">Última atualização</string>
+    <string name="rotulo_descricao">Descrição</string>
+    <string name="setor_nao_informado">Setor não informado</string>
+    <string name="descricao_vazia">Sem descrição.</string>
+
+    <!-- Ações -->
+    <string name="acao_voltar">Voltar</string>
+    <string name="acao_novo">Novo</string>
+    <string name="acao_novo_registro">Novo registro</string>
+    <string name="acao_ver_registros">Ver todos os registros</string>
+    <string name="acao_cadastrar">Cadastrar</string>
+    <string name="acao_salvar_alteracoes">Salvar</string>
+    <string name="acao_cancelar">Cancelar</string>
+    <string name="acao_editar">Editar</string>
+    <string name="acao_excluir">Excluir</string>
+    <string name="acao_desfazer">Desfazer</string>
+    <string name="acao_descartar">Descartar</string>
+    <string name="acao_continuar_editando">Continuar editando</string>
+    <string name="acao_marcar_concluido">Marcar como concluído</string>
+    <string name="acao_reabrir">Reabrir (marcar como pendente)</string>
+
+    <!-- Diálogos -->
+    <string name="dialogo_excluir_titulo">Excluir registro?</string>
+    <string name="dialogo_excluir_mensagem">O registro \"%1$s\" será removido.</string>
+    <string name="dialogo_descartar_titulo">Descartar alterações?</string>
+    <string name="dialogo_descartar_mensagem">As informações digitadas ainda não foram salvas e serão perdidas.</string>
+
+    <!-- Mensagens de feedback -->
+    <string name="msg_registro_cadastrado">Registro cadastrado com sucesso!</string>
+    <string name="msg_registro_atualizado">Registro atualizado com sucesso!</string>
+    <string name="msg_registro_excluido">Registro \"%1$s\" excluído</string>
+    <string name="msg_registro_restaurado">Registro restaurado</string>
+    <string name="msg_registro_nao_encontrado">Registro não encontrado</string>
+    <string name="msg_verifique_campos">Verifique os campos destacados</string>
+    <string name="msg_alteracoes_descartadas">Alterações descartadas</string>
+    <string name="msg_marcado_concluido">Registro marcado como concluído</string>
+    <string name="msg_registro_reaberto">Registro reaberto como pendente</string>
+</resources>

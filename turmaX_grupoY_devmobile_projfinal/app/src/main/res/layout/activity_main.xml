@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tela inicial: cabeçalho, resumo, atalhos por categoria e ações principais -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    tools:context=".MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/espaco_grande">
+
+            <!-- Cabeçalho -->
+            <LinearLayout
+                android:id="@+id/appBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/espaco_grande"
+                android:paddingTop="@dimen/espaco_grande"
+                android:paddingEnd="@dimen/espaco_grande"
+                android:paddingBottom="48dp">
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:contentDescription="@null"
+                    app:srcCompat="@drawable/ic_factory"
+                    app:tint="?attr/colorSecondary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/espaco_medio"
+                    android:text="@string/app_name"
+                    android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:alpha="0.85"
+                    android:text="@string/main_subtitulo"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/espaco_medio"
+                    android:background="@drawable/bg_tag"
+                    android:backgroundTint="@color/branco_translucido"
+                    android:paddingStart="12dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/main_selo_offline"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="?attr/colorOnPrimary" />
+            </LinearLayout>
+
+            <!-- Card de resumo sobreposto ao cabeçalho -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.App.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/espaco_grande"
+                android:layout_marginTop="-32dp"
+                android:layout_marginEnd="@dimen/espaco_grande"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/espaco_grande"
+                    android:paddingBottom="@dimen/espaco_grande">
+
+                    <LinearLayout style="@style/App.ResumoColuna">
+
+                        <TextView
+                            android:id="@+id/tvTotal"
+                            style="@style/App.ResumoNumero"
+                            android:textColor="?attr/colorPrimary"
+                            tools:text="12" />
+
+                        <TextView
+                            style="@style/App.ResumoRotulo"
+                            android:text="@string/resumo_total" />
+                    </LinearLayout>
+
+                    <View style="@style/App.DivisorVertical" />
+
+                    <LinearLayout style="@style/App.ResumoColuna">
+
+                        <TextView
+                            android:id="@+id/tvPendentes"
+                            style="@style/App.ResumoNumero"
+                            android:textColor="@color/prioridade_media"
+                            tools:text="5" />
+
+                        <TextView
+                            style="@style/App.ResumoRotulo"
+                            android:text="@string/resumo_pendentes" />
+                    </LinearLayout>
+
+                    <View style="@style/App.DivisorVertical" />
+
+                    <LinearLayout style="@style/App.ResumoColuna">
+
+                        <TextView
+                            android:id="@+id/tvPrioridadeAlta"
+                            style="@style/App.ResumoNumero"
+                            android:textColor="@color/prioridade_alta"
+                            tools:text="2" />
+
+                        <TextView
+                            style="@style/App.ResumoRotulo"
+                            android:text="@string/resumo_alta_pendentes" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Categorias -->
+            <TextView
+                style="@style/App.TituloSecao"
+                android:layout_marginStart="@dimen/espaco_grande"
+                android:layout_marginTop="@dimen/espaco_extra"
+                android:text="@string/main_secao_categorias" />
+
+            <include
+                android:id="@+id/cardCategoriaRegistros"
+                layout="@layout/item_categoria_resumo" />
+
+            <include
+                android:id="@+id/cardCategoriaListas"
+                layout="@layout/item_categoria_resumo" />
+
+            <include
+                android:id="@+id/cardCategoriaAnotacoes"
+                layout="@layout/item_categoria_resumo" />
+
+            <!-- Ações principais -->
+            <TextView
+                style="@style/App.TituloSecao"
+                android:layout_marginStart="@dimen/espaco_grande"
+                android:layout_marginTop="@dimen/espaco_extra"
+                android:text="@string/main_secao_acoes" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNovoRegistro"
+                style="@style/Widget.App.Button.Grande"
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/espaco_grande"
+                android:layout_marginTop="@dimen/espaco_medio"
+                android:layout_marginEnd="@dimen/espaco_grande"
+                android:text="@string/acao_novo_registro"
+                app:icon="@drawable/ic_add" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVerRegistros"
+                style="@style/Widget.App.Button.Grande.Contorno"
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/espaco_grande"
+                android:layout_marginTop="@dimen/espaco_medio"
+                android:layout_marginEnd="@dimen/espaco_grande"
+                android:text="@string/acao_ver_registros"
+                app:icon="@drawable/ic_list" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/espaco_grande"
+                android:layout_marginTop="@dimen/espaco_extra"
+                android:layout_marginEnd="@dimen/espaco_grande"
+                android:gravity="center"
+                android:text="@string/main_rodape"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Formulário de cadastro e edição de registros -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    tools:context=".FormularioRegistroActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.App.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            tools:title="@string/titulo_novo" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/altura_barra_acoes"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/espaco_grande">
+
+            <!-- Categoria -->
+            <TextView
+                style="@style/App.RotuloCampo"
+                android:text="@string/rotulo_categoria" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipCategoriaRegistros"
+                    style="@style/Widget.App.Chip.Filtro"
+                    android:text="@string/categoria_registro"
+                    app:chipIcon="@drawable/ic_registro"
+                    app:chipIconTint="@color/categoria_registro"
+                    app:chipIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipCategoriaListas"
+                    style="@style/Widget.App.Chip.Filtro"
+                    android:text="@string/categoria_lista_controle"
+                    app:chipIcon="@drawable/ic_checklist"
+                    app:chipIconTint="@color/categoria_lista_controle"
+                    app:chipIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipCategoriaAnotacoes"
+                    style="@style/Widget.App.Chip.Filtro"
+                    android:text="@string/categoria_anotacao"
+                    app:chipIcon="@drawable/ic_anotacao"
+                    app:chipIconTint="@color/categoria_anotacao"
+                    app:chipIconVisible="true" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Título -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilTitulo"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaco_grande"
+                android:hint="@string/hint_titulo"
+                app:counterEnabled="true"
+                app:counterMaxLength="60"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:maxLength="60"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Setor -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilSetor"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_setor"
+                app:helperText="@string/ajuda_setor"
+                app:startIconDrawable="@drawable/ic_location">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etSetor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:maxLength="40"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Prioridade -->
+            <TextView
+                style="@style/App.RotuloCampo"
+                android:layout_marginTop="@dimen/espaco_grande"
+                android:text="@string/rotulo_prioridade" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/togglePrioridade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPrioridadeBaixa"
+                    style="@style/Widget.App.Button.Prioridade"
+                    android:text="@string/prioridade_baixa" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPrioridadeMedia"
+                    style="@style/Widget.App.Button.Prioridade"
+                    android:text="@string/prioridade_media" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPrioridadeAlta"
+                    style="@style/Widget.App.Button.Prioridade"
+                    android:text="@string/prioridade_alta" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- Descrição -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilDescricao"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaco_grande"
+                android:hint="@string/hint_descricao"
+                app:counterEnabled="true"
+                app:counterMaxLength="500">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDescricao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|start"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="500"
+                    android:minLines="4" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Status -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.App.Card.Contorno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaco_medio">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swConcluido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/altura_toque_minima"
+                    android:paddingStart="@dimen/espaco_grande"
+                    android:paddingEnd="@dimen/espaco_grande"
+                    android:text="@string/rotulo_concluido"
+                    android:textAppearance="?attr/textAppearanceBodyLarge" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaco_medio"
+                android:text="@string/campos_obrigatorios"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Barra de ações fixa no rodapé -->
+    <LinearLayout
+        android:id="@+id/barraAcoes"
+        style="@style/App.BarraAcoes">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancelar"
+            style="@style/Widget.App.Button.Grande.Contorno"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/espaco_pequeno"
+            android:layout_weight="1"
+            android:text="@string/acao_cancelar" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSalvar"
+            style="@style/Widget.App.Button.Grande"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/espaco_pequeno"
+            android:layout_weight="1"
+            android:text="@string/acao_cadastrar"
+            app:icon="@drawable/ic_save" />
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

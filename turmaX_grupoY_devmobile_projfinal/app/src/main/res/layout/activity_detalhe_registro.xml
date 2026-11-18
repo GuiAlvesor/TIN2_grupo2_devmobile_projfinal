@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Detalhes de um registro com ações de status, edição e exclusão -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    tools:context=".DetalheRegistroActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.App.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/altura_barra_acoes"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/espaco_grande">
+
+            <!-- Cabeçalho do registro -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.App.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/ivIconeCategoria"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@null"
+                            tools:src="@drawable/ic_registro" />
+
+                        <TextView
+                            android:id="@+id/tvCategoria"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/espaco_pequeno"
+                            android:textAllCaps="true"
+                            android:textAppearance="?attr/textAppearanceLabelLarge"
+                            android:textStyle="bold"
+                            tools:text="Registro" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTitulo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/espaco_medio"
+                        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textIsSelectable="true"
+                        android:textStyle="bold"
+                        tools:text="Parada para setup - Injetora 3" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/espaco_medio"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvPrioridade"
+                            style="@style/App.Tag"
+                            tools:text="Prioridade: Alta" />
+
+                        <TextView
+                            android:id="@+id/tvStatus"
+                            style="@style/App.Tag"
+                            android:layout_marginStart="@dimen/espaco_pequeno"
+                            tools:text="Pendente" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Informações -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.App.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaco_medio">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        style="@style/App.RotuloDetalhe"
+                        android:drawablePadding="6dp"
+                        android:text="@string/rotulo_setor"
+                        app:drawableStartCompat="@drawable/ic_location_pequeno"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:id="@+id/tvSetor"
+                        style="@style/App.ValorDetalhe"
+                        tools:text="Injeção" />
+
+                    <TextView
+                        style="@style/App.RotuloDetalhe"
+                        android:layout_marginTop="@dimen/espaco_grande"
+                        android:text="@string/rotulo_criado_em" />
+
+                    <TextView
+                        android:id="@+id/tvCriadoEm"
+                        style="@style/App.ValorDetalhe"
+                        tools:text="18/11/2026 08:30" />
+
+                    <LinearLayout
+                        android:id="@+id/linhaAtualizadoEm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/App.RotuloDetalhe"
+                            android:layout_marginTop="@dimen/espaco_grande"
+                            android:text="@string/rotulo_atualizado_em" />
+
+                        <TextView
+                            android:id="@+id/tvAtualizadoEm"
+                            style="@style/App.ValorDetalhe"
+                            tools:text="18/11/2026 09:10" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Descrição -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.App.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espaco_medio">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        style="@style/App.RotuloDetalhe"
+                        android:text="@string/rotulo_descricao" />
+
+                    <TextView
+                        android:id="@+id/tvDescricao"
+                        style="@style/App.ValorDetalhe"
+                        android:lineSpacingMultiplier="1.2"
+                        android:textIsSelectable="true"
+                        tools:text="Setup do molde 115 iniciado às 07h40 e finalizado às 08h25." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAlternarStatus"
+                style="@style/Widget.App.Button.Grande.Tonal"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/espaco_grande"
+                android:text="@string/acao_marcar_concluido"
+                app:icon="@drawable/ic_check_circle" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Barra de ações fixa no rodapé -->
+    <LinearLayout
+        android:id="@+id/barraAcoes"
+        style="@style/App.BarraAcoes">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnExcluir"
+            style="@style/Widget.App.Button.Grande.Contorno.Perigo"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/espaco_pequeno"
+            android:layout_weight="1"
+            android:text="@string/acao_excluir"
+            app:icon="@drawable/ic_delete" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditar"
+            style="@style/Widget.App.Button.Grande"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/espaco_pequeno"
+            android:layout_weight="1"
+            android:text="@string/acao_editar"
+            app:icon="@drawable/ic_edit" />
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

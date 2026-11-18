@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Paleta de alto contraste pensada para ambiente industrial (boa leitura sob iluminação forte) -->
+<resources>
+    <!-- Marca -->
+    <color name="azul_industrial">#1E3A5F</color>
+    <color name="azul_industrial_escuro">#132842</color>
+    <color name="azul_container">#D6E4F5</color>
+    <color name="azul_on_container">#0B1D33</color>
+    <color name="laranja_seguranca">#F28C28</color>
+    <color name="laranja_container">#FFE3C7</color>
+    <color name="quase_preto">#1B1F24</color>
+
+    <!-- Neutros -->
+    <color name="branco">#FFFFFF</color>
+    <color name="branco_translucido">#33FFFFFF</color>
+    <color name="fundo">#F2F4F7</color>
+    <color name="superficie_variante">#E3E8EE</color>
+    <color name="texto_secundario">#4A5562</color>
+    <color name="contorno">#B9C2CC</color>
+
+    <!-- Categorias -->
+    <color name="categoria_registro">#1E6FD9</color>
+    <color name="categoria_lista_controle">#2E8B57</color>
+    <color name="categoria_anotacao">#B7791F</color>
+
+    <!-- Prioridades -->
+    <color name="prioridade_baixa">#2E7D32</color>
+    <color name="prioridade_media">#E07B00</color>
+    <color name="prioridade_alta">#C62828</color>
+
+    <!-- Status -->
+    <color name="status_concluido">#2E7D32</color>
+    <color name="status_pendente">#5F6B7A</color>
+
+    <!-- Ações destrutivas -->
+    <color name="perigo">#C62828</color>
+</resources>
